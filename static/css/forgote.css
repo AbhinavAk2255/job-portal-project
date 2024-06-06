@@ -1,0 +1,38 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    background: linear-gradient(#f1f1f1, #b3cde0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+}
+.forgot-password-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+.forgot-password-container h1 {
+    font-size: 24px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+.forgot-password-container p {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.forgot-password-container .form-control {
+    margin-bottom: 1rem;
+}
+.forgot-password-container .btn-primary {
+    background-color: #6c63ff;
+    border-color: #6c63ff;
+}
+.forgot-password-container .btn-transparent {
+    background-color: transparent;
+    border-color: transparent;
+    color: #6c63ff;
+}
