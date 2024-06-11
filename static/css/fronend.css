@@ -1,0 +1,289 @@
+/* navbar styles */
+
+.navbar {
+    background-color: #12486B;
+    color: F5FCCD;
+    
+  }
+  .container-fluid{
+    padding: 20px 78px;
+  }
+  .navbar-nav .nav-link {
+    color: #F1F8E8;
+  }
+  .navbar-nav{
+    display: flex;
+    gap: 60px;
+  }
+  .navbar-nav .nav-link:hover {
+    color: #55AD9B;
+  }
+  .navbar-brand {
+    text-align: left;
+  }
+  .profile-icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  .profile-icons a {
+    color: #ffffff;
+    height: 20px;
+    width: 20px;
+    margin: 0 5px;
+  }
+  .login-btn{
+    padding: 8px 28px;
+    border: none;
+    color: #F1F8E8;
+    font-size: 18px;
+    background-color: #55AD9B;
+    margin-right: 10px;
+  }
+  .reg-btn{
+    padding: 8px 28px;
+    border: none;
+    color: #F1F8E8;
+    font-size: 18px;
+    background-color: transparent;
+    margin-right: 15px;
+    border: 0.5px solid #55AD9B;
+  }
+  .reg-btn:hover{
+    background-color: #55AD9B;
+    transition: background-color 0.15s;
+  }
+
+
+/* home section stylings */
+
+.home-section {
+	height: 100vh;
+	font-size: clamp(2.5rem, 10vw, 6rem);
+	color: #ccc;
+	display: flex;
+	justify-content: center;
+	font-weight: 700;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	align-items: center;
+}
+
+
+/* login section stylings */
+
+.login-area{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.login-container {
+    margin: 200px;
+    background-color: #78d6c6;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 10px rgba(0, 0, 0, 0.1);
+    max-width: 550px;
+    width: 100%;
+    max-height: 400px;
+
+}
+.login-container h1 {
+    font-size: 24px;
+    margin-bottom: 2rem;
+    font-weight: bold;
+    color: #12486b;
+    text-align: center;
+}
+.login-container .form-control {
+    margin-bottom: 2rem;
+    color: #f5fccd;
+    background-color: #f5fccd;
+    padding: 10px;
+}
+.login-container .btn-primary {
+    background-color: #12486b;
+    border-color: #12486b;
+    width: 100%;
+    padding: 10px;
+}
+.login-container .form-control::placeholder{
+    color: gray;
+    font-size: 14px;
+}
+
+
+/* register section stylings */
+
+.register-area{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.registration-container {
+    margin: 150px;
+    background: #78d6c6;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 10px rgba(0, 0, 0, 0.1);
+    max-width: 550px;
+    width: 100%;
+}
+.registration-container h1 {
+    font-size: 24px;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #12486b;
+}
+.registration-container p {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #F5FCCD;
+}
+.registration-container .form-control {
+    margin-bottom: 2rem;
+    color: #f5fccd;
+    background-color: #f5fccd;
+    padding: 10px;
+}
+.registration-container .btn-primary {
+    background-color: #12486b;
+    border-color: #12486b;
+    width: 100%;
+    padding: 10px;
+}
+.registration-container .btn-transparent {
+    background-color: transparent;
+    border-color: transparent;
+    color: #12486b;
+    border: 1px solid #F5FCCD;
+    border-radius:10px;
+    width: 100%;
+    padding: 10px;
+}
+.registration-container .btn-transparent:active{
+    background-color: #12486b;
+    color: #f5fccd;
+}
+.registration-container .form-control::placeholder{
+    color: gray;
+    font-size: 14px;
+}
+
+
+/* about section stylings */
+
+.about-section {
+	height: 100vh;
+	font-size: clamp(2.5rem, 10vw, 6rem);
+	color: #ccc;
+	display: flex;
+	justify-content: center;
+	font-weight: 700;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	align-items: center;
+}
+
+/* footer section stylings */
+
+.footer {
+    background: #12486B;
+    color: gray;
+    padding: 40px 0;
+    height: 350px;
+    color: F5FCCD;
+
+  }
+  .footer .logo img {
+    max-width: 100px;
+  }
+  .social-icons{
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+  }
+  .footer .social-icons a {
+    filter: grayscale(100%);
+    font-size: 25px;
+  }
+  .footer .social-icons a:hover {
+    filter: grayscale(0%);
+  }
+  .footer h5 {
+    color: #ffffff;
+    text-align: start;
+  }
+  .footer ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 20px;
+    text-align: start;
+  }
+  .footer ul li {
+    margin-bottom: 10px;
+  }
+  .footer ul li a {
+    color: #F1F8E8;
+    text-decoration: none;
+    font-size: 15px;
+    margin-top: 20px;
+  }
+  .footer ul li a:hover {
+    color: #55AD9B;
+  }
+  .footer .copyright {
+    text-align: center;
+    border-top: 1px solid #D8EFD3;
+    padding-top: 10px;
+    margin-top: 20px;
+    color: #F1F8E8;
+}
+
+/* forgotte section stylings */
+
+.forgote-area{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.forgot-password-container {
+    margin: 200px;
+    background-color: #78d6c6;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 10px rgba(0, 0, 0, 0.1);
+    max-width: 530px;
+    width: 100%;
+}
+.forgot-password-container h1 {
+    font-size: 24px;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #12486b;
+}
+.forgot-password-container p {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #12486b;
+}
+.forgot-password-container .form-control {
+    margin-bottom: 2rem;
+    padding: 10px;
+}
+.forgot-password-container .btn-primary {
+    background-color: #12486b;
+    border-color: #12486b;
+    width: 100%;
+}
+.forgot-password-container .btn-transparent {
+    background-color: transparent;
+    border-color: transparent;
+    color: #12486b;
+    
+}
+.forgot-password-container .form-control::placeholder{
+    color: gray;
+    font-size: 14px;
+}
