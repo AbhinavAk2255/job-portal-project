@@ -8,18 +8,25 @@
         <div class="login-container">
             <h1>Login</h1>
             
-            <form>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
                 <div class="form-group">
                     
-                    <input type="email" class="form-control" id="email" placeholder="Enter email">
+                    <input type="text" class="form-control" id="Username" name="Username" placeholder="Username">
                 </div>
                 <div class="form-group">
                     
-                    <input type="password" class="form-control" id="password" placeholder="Password">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Sign In</button>
             </form>
-            
+            {% if messages %}
+            <div class="message_container">
+                {% for message in messages %}
+                <li style="font-size: 10px;" class="{{message.tags}}">{{message}}</li>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
     </div>
 

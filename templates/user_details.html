@@ -1,0 +1,124 @@
+{% extends 'admin-dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="content">
+    <div class="row">
+      <div class="col-xl-3">  
+        <div class="card">
+          <div class="card-body profile-card pt-2 d-flex flex-column align-items-center">
+  
+            <img src="../static/images/user.svg" alt="Profile" class="rounded-circle" style="height: 100px; width: 100px;">
+            <h4>User</h4>
+            <h5>User Id</h5>
+          </div>
+          <button class="btn btn-info Action-buttons">Message</button>
+          <button class="btn btn-danger Action-buttons">Deactivate Account</button>
+        </div>
+  
+      </div>
+  
+    </div>
+
+    <div class="row">
+      <div class="col-xl-12">
+  
+        <div class="card">
+          <div class="col-lg-12 col-md-12 col-sm-8">
+            <div class="card">
+              <div class="card-header card-header-warning">
+                <h4 class="card-title">User 1</h4>
+                <p class="card-category">Personal Details</p>
+              </div>
+              <div class="card-body table-responsive">
+                <table class="table table-hover">
+                  <thead class="text-warning">
+                    
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>DOB</th>
+                    <th>Registration Date</th>
+                    <th>Job Category</th>
+                    <th>Resume/Cv</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>User 1</td>
+                      <td>user1@gmail.com</td>
+                      <td>1234567890</td>
+                      <td>abc house</td>
+                      <td>08/04/2000</td>
+                      <td>01/03/2023</td>
+                      <td>Fullstack</td>
+                      <td>
+                        <a href="/" class="btn btn-primary btn-sm">View</a>
+                        <a href="/" class="btn btn-info btn-sm">Download</a>
+                      </td>
+                      <td>Active</td>
+                      <td>06/06/2024</td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12 col-md-12 col-sm-6">
+            <div class="card">
+              <div class="card-header card-header-warning">
+                <h4 class="card-title">User 1</h4>
+                <p class="card-category">Application History</p>
+              </div>
+              <div class="card-body table-responsive">
+                <table class="table table-hover">
+                  <thead class="text-warning">
+                    
+                    <th>Job Title</th>
+                    <th>Company Name</th>
+                    <th>Application Date</th>
+                    <th>Status</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Fullstack Developer</td>
+                      <td>Test Company/td>
+                      <td>08/05/2024</td>
+                      <td>Pending</td>
+                    </tr>
+                    <tr>
+                      <td>Backend Developer</td>
+                      <td>Test Company/td>
+                      <td>08/04/2024</td>
+                      <td>Rejected</td>
+                    </tr>
+                    <tr>
+                      <td>UI Designer</td>
+                      <td>Test Company/td>
+                      <td>08/05/2024</td>
+                      <td>Accepted</td>
+                    </tr>
+                    <tr>
+                      <td>UI Designer</td>
+                      <td>Test Company/td>
+                      <td>08/05/2024</td>
+                      <td>Accepted</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+</section>
+
+{% endblock content %}

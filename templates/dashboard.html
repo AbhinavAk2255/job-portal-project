@@ -125,70 +125,110 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-6 col-md-12">
+        <div class="col-lg-12 col-md-12">
           <div class="card">
             <div class="card-header card-header-primary">
               <h4 class="card-title">Job Applications</h4>
-              <p class="card-category">New employees on 2nd Jun, 2024</p>
+              <p class="card-category">Last Update on 24 Hours</p>
             </div>
             <div class="card-body table-responsive">
               <table class="table table-hover">
                 <thead class="text-warning">
-                  <th>ID</th>
+                  <th>Application ID</th>
                   <th>Job Title</th>
-                  <th>No.Of Post</th>
-                  <th>Qualification</th>
-                  <th>Expeeriance</th>
-                  <th>Last Date</th>
                   <th>Company</th>
-                  <th>Country</th>
-                  <th>State</th>
-                  <th>Posted Date</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
+                  <th>Location</th>
+                  <th>Contact Person</th>
+                  <th>Openings</th>
+                  <th>Expeeriance</th>
+                  <th>Qualification</th>
+                  <th>Applications Received</th>
+                  <th>Post Date</th>
+                  <th>status</th>
+                  <th>End Date</th>
+                  <th>Verification</th>
+                  <th>Actions</th>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>1</td>
-                    <td>Web developer</td>
-                    <td>3</td>
-                    <td>BCA</td>
-                    <td>1 Years</td>
-                    <td>20/07/2024</td>
-                    <td>Test Company</td>
-                    <td>Us</td>
-                    <td>Kerala</td>
-                    <td>01/06/2024</td>
-                    <td><i class="material-icons">check</i></td>
-                    <td>Approved</td>
+                    <td>001</td>
+                    <td>Software Engineer</td>
+                    <td>ABC Tech Solutions</td>
+                    <td>New York, USA</td>
+                    <td>John Doe</td>
+                    <td>5</td>
+                    <td>3+ years</td>
+                    <td>Bachelor's Degree in Computer Science</td>
+                    <td>15</td>
+                    <td>2024-06-01</td>
+                    <td>Active</td>
+                    <td>2024-07-01</td>
+                    <td>Verified</td>
+                    <td>
+                      <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                      <a href="{% url 'job_details' %}" class="btn btn-info btn-sm">Edit</a>
+                      <a href="{% url 'job_details' %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
                   </tr>
                   <tr>
-                    <td>1</td>
-                    <td>Web developer</td>
-                    <td>3</td>
-                    <td>BCA</td>
-                    <td>1 Years</td>
-                    <td>20/07/2024</td>
-                    <td>Test Company</td>
-                    <td>Us</td>
-                    <td>Kerala</td>
-                    <td>01/06/2024</td>
-                    <td><i class="material-icons">check</i></td>
-                    <td>Approved</td>
+                    <td>002</td>
+                    <td>Marketing Manager</td>
+                    <td>XYZ Marketing Agency</td>
+                    <td>Los Angeles, USA</td>
+                    <td>Jane Smith</td>
+                    <td>2</td>
+                    <td>5+ years</td>
+                    <td>Bachelor's Degree in Marketing</td>
+                    <td>10</td>
+                    <td>2024-05-15</td>
+                    <td>Closed</td>
+                    <td>2024-06-15</td>
+                    <td>Verified</td>
+                    <td>
+                      <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                      <a href="{% url 'job_details' %}" class="btn btn-info btn-sm">Edit</a>
+                      <a href="{% url 'job_details' %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
                   </tr>
                   <tr>
-                    <td>1</td>
-                    <td>Web developer</td>
+                    <td>003</td>
+                    <td>Graphic Designer</td>
+                    <td>Design Studio X</td>
+                    <td>San Francisco, USA</td>
+                    <td>Emily Johnson</td>
                     <td>3</td>
-                    <td>BCA</td>
-                    <td>1 Years</td>
-                    <td>20/07/2024</td>
-                    <td>Test Company</td>
-                    <td>Us</td>
-                    <td>Kerala</td>
-                    <td>01/06/2024</td>
-                    <td><i class="material-icons">check</i></td>
-                    <td>Approved</td>
+                    <td>2+ years</td>
+                    <td>Diploma in Graphic Design</td>
+                    <td>8</td>
+                    <td>2024-06-10</td>
+                    <td>Active</td>
+                    <td>2024-07-10</td>
+                    <td>Verified</td>
+                    <td>
+                      <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                      <a href="{% url 'job_details' %}" class="btn btn-info btn-sm">Edit</a>
+                      <a href="{% url 'job_details' %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>004</td>
+                    <td>Financial Analyst</td>
+                    <td>Global Finance Inc.</td>
+                    <td>London, UK</td>
+                    <td>Michael Brown</td>
+                    <td>1</td>
+                    <td>4+ years</td>
+                    <td>Master's Degree in Finance</td>
+                    <td>5</td>
+                    <td>2024-06-05</td>
+                    <td>Active</td>
+                    <td>2024-07-05</td>
+                    <td>Not Verified</td>
+                    <td>
+                      <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                      <a href="{% url 'job_details' %}" class="btn btn-info btn-sm">Edit</a>
+                      <a href="{% url 'job_details' %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
                   </tr>
                   <!-- <tr>
                     <td>4</td>
@@ -199,10 +239,12 @@
                 </tbody>
               </table>
             </div>
+            <a style="text-decoration: underline;" href="{% url 'jobs_lists' %}">See More>></a>
           </div>
+          
         </div>
 
-        <div class="col-lg-6 col-md-12">
+        <!-- <div class="col-lg-6 col-md-12">
           <div class="card">
             <div class="card-header card-header-warning">
               <h4 class="card-title">Employer</h4>

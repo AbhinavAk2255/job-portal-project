@@ -1,0 +1,83 @@
+{% extends 'admin-dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="content">
+    <div class="row">
+      <div class="col-xl-3">  
+        <div class="card">
+          <div class="card-body profile-card pt-2 d-flex flex-column align-items-left">
+  
+            <h4>Application ID</h4>
+            <h4>Job 1</h4>
+            <p>Test company</p>
+            <p>us</p>
+
+          </div>
+
+        </div>
+        <button class="btn btn-success Action-buttons">Verify</button>
+        <button class="btn btn-danger Action-buttons">Reject</button>
+  
+      </div>
+  
+
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="col-lg-12 col-md-12 col-sm-8">
+            <div class="card">
+              <div class="card-header card-header-warning">
+                <h4 class="card-title">Job 1</h4>
+                <p class="card-category">information</p>
+              </div>
+              <div class="card-body table-responsive">
+                <table class="table table-hover">
+                  <thead class="text-warning">
+                    
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Contact Person</th>
+                    <th>Openings</th>
+                    <th>Expeeriance</th>
+                    <th>Qualification</th>
+                    <th>Applications Received</th>
+                    <th>Post Date</th>
+                    <th>status</th>
+                    <th>End Date</th>
+                    <th>Verification</th>
+                    <th>Description</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Software Engineer</td>
+                      <td>ABC Tech Solutions</td>
+                      <td>New York, USA</td>
+                      <td>John Smith</td>
+                      <td>3</td>
+                      <td>3-5 years</td>
+                      <td>Bachelor's degree in Computer Science</td>
+                      <td>10</td>
+                      <td>2024-06-15</td>
+                      <td>Active</td>
+                      <td>2024-07-15</td>
+                      <td>Verified</td>
+                      <td>This position requires a skilled software engineer with experience in web development.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>link
+  
+        </div>
+  
+      </div>
+    </div>
+
+</section>
+
+{% endblock content %}

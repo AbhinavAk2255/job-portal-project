@@ -1,0 +1,215 @@
+{% extends 'admin-dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-plain">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title mt-0">Jobs Lists</h4>
+              <p class="card-category"> Here is a subtitle for this table</p>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="text-warning">
+                      <th>Application ID</th>
+                      <th>Job Title</th>
+                      <th>Company</th>
+                      <th>Location</th>
+                      <th>Post Date</th>
+                      <th>status</th>
+                      <th>End Date</th>
+                      <th>Verification</th>
+                      <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Software Engineer</td>
+                            <td>ABC Inc.</td>
+                            <td>New York, NY</td>
+                            <td>2024-06-10</td>
+                            <td>Active</td>
+                            <td>2024-07-10</td>
+                            <td>Verified</td>
+                            <td>
+                                
+                              <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                              <a href="#" class="btn btn-info btn-sm">Edit</a>
+                              <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>2</td>
+                            <td>Marketing Manager</td>
+                            <td>XYZ Corp.</td>
+                            <td>Los Angeles, CA</td>
+                            <td>2024-06-11</td>
+                            <td>Active</td>
+                            <td>2024-07-11</td>
+                            <td>Verified</td>
+                            <td>
+
+                                <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                                <a href="#" class="btn btn-info btn-sm">Edit</a>
+                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>3</td>
+                            <td>Graphic Designer</td>
+                            <td>Design Co.</td>
+                            <td>Chicago, IL</td>
+                            <td>2024-06-12</td>
+                            <td>Active</td>
+                            <td>2024-07-12</td>
+                            <td>Verified</td>
+                            <td>
+                              <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                              <a href="#" class="btn btn-info btn-sm">Edit</a>
+                              <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>4</td>
+                            <td>Financial Analyst</td>
+                            <td>Finance Corp.</td>
+                            <td>Houston, TX</td>
+                            <td>2024-06-13</td>
+                            <td>Active</td>
+                            <td>2024-07-13</td>
+                            <td>Verified</td>
+                            <td>
+                              <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                              <a href="#" class="btn btn-info btn-sm">Edit</a>
+                              <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>5</td>
+                            <td>HR Manager</td>
+                            <td>HR Solutions</td>
+                            <td>Miami, FL</td>
+                            <td>2024-06-14</td>
+                            <td>Active</td>
+                            <td>2024-07-14</td>
+                            <td>Verified</td>
+                            <td>
+                              <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                              <a href="#" class="btn btn-info btn-sm">Edit</a>
+                              <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>6</td>
+                            <td>Web Developer</td>
+                            <td>Tech Solutions</td>
+                            <td>Seattle, WA</td>
+                            <td>2024-06-15</td>
+                            <td>Active</td>
+                            <td>2024-07-15</td>
+                            <td>Verified</td>
+                            <td>
+                              <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                              <a href="#" class="btn btn-info btn-sm">Edit</a>
+                              <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>7</td>
+                            <td>Web Developer</td>
+                            <td>Tech Solutions</td>
+                            <td>Seattle, WA</td>
+                            <td>2024-06-15</td>
+                            <td>Active</td>
+                            <td>2024-07-15</td>
+                            <td>Verified</td>
+                            <td>
+                              <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                              <a href="#" class="btn btn-info btn-sm">Edit</a>
+                              <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>8</td>
+                            <td>Web Developer</td>
+                            <td>Tech Solutions</td>
+                            <td>Seattle, WA</td>
+                            <td>2024-06-15</td>
+                            <td>Active</td>
+                            <td>2024-07-15</td>
+                            <td>Verified</td>
+                            <td>
+                              <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                              <a href="#" class="btn btn-info btn-sm">Edit</a>
+                              <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>9</td>
+                            <td>Web Developer</td>
+                            <td>Tech Solutions</td>
+                            <td>Seattle, WA</td>
+                            <td>2024-06-15</td>
+                            <td>Active</td>
+                            <td>2024-07-15</td>
+                            <td>Verified</td>
+                            <td>
+                              <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                              <a href="#" class="btn btn-info btn-sm">Edit</a>
+                              <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>10</td>
+                            <td>Web Developer</td>
+                            <td>Tech Solutions</td>
+                            <td>Seattle, WA</td>
+                            <td>2024-06-15</td>
+                            <td>Active</td>
+                            <td>2024-07-15</td>
+                            <td>Verified</td>
+                            <td>
+                              <a href="{% url 'job_details' %}" class="btn btn-primary btn-sm">View</a>
+                              <a href="#" class="btn btn-info btn-sm">Edit</a>
+                              <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                          </tr>
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock content %}

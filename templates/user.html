@@ -9,140 +9,167 @@
         <div class="col-md-12">
           <div class="card card-plain">
             <div class="card-header card-header-primary">
-              <h4 class="card-title mt-0">User Table</h4>
+              <h4 class="card-title mt-0">User Lists</h4>
               <p class="card-category"> Here is a subtitle for this table</p>
             </div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-hover">
-                  <thead class="">
-                    <th>
-                      ID
-                    </th>
-                    <th>
-                      Name
-                    </th>
-                    <th>
-                      Country
-                    </th>
-                    <th>
-                      City
-                    </th>
-                    <th>
-                      Salary
-                    </th>
+                  <thead class="text-warning">
+                    <tr>
+                      <th>User ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone Number</th>
+                      <th>Registration Date</th>
+                      <th>Location</th>
+                      <th>Job Category</th>
+                      <th>Status</th>
+                      <th>Last Login</th>
+                      <th>Actions</th>
+                    </tr>
                   </thead>
                   <tbody>
                     <tr>
+                      <td>001</td>
+                      <td>John Doe</td>
+                      <td>john.doe@example.com</td>
+                      <td>(123) 456-7890</td>
+                      <td>2023-01-15</td>
+                      <td>New York, USA</td>
+                      <td>Software Engineering</td>
+                      <td>Active</td>
+                      <td>2024-06-10</td>
                       <td>
-                        1
-                      </td>
-                      <td>
-                        Dakota Rice
-                      </td>
-                      <td>
-                        Niger
-                      </td>
-                      <td>
-                        Oud-Turnhout
-                      </td>
-                      <td>
-                        $36,738
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        2
-                      </td>
-                      <td>
-                        Minerva Hooper
-                      </td>
-                      <td>
-                        Curaçao
-                      </td>
-                      <td>
-                        Sinaai-Waas
-                      </td>
-                      <td>
-                        $23,789
+                        <a href="{% url 'user_details' %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="#edit001" class="btn btn-info btn-sm">Edit</a>
+                        <a href="#delete001" class="btn btn-danger btn-sm">Delete</a>
                       </td>
                     </tr>
                     <tr>
+                      <td>002</td>
+                      <td>Jane Smith</td>
+                      <td>jane.smith@example.com</td>
+                      <td>(987) 654-3210</td>
+                      <td>2023-02-20</td>
+                      <td>Los Angeles, USA</td>
+                      <td>Marketing</td>
+                      <td>Active</td>
+                      <td>2024-06-11</td>
                       <td>
-                        3
-                      </td>
-                      <td>
-                        Sage Rodriguez
-                      </td>
-                      <td>
-                        Netherlands
-                      </td>
-                      <td>
-                        Baileux
-                      </td>
-                      <td>
-                        $56,142
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        4
-                      </td>
-                      <td>
-                        Philip Chaney
-                      </td>
-                      <td>
-                        Korea, South
-                      </td>
-                      <td>
-                        Overland Park
-                      </td>
-                      <td>
-                        $38,735
+                        <a href="{% url 'user_details' %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="#edit002" class="btn btn-info btn-sm">Edit</a>
+                        <a href="#delete002" class="btn btn-danger btn-sm">Delete</a>
                       </td>
                     </tr>
                     <tr>
+                      <td>003</td>
+                      <td>Michael Brown</td>
+                      <td>michael.brown@example.com</td>
+                      <td>(555) 123-4567</td>
+                      <td>2023-03-15</td>
+                      <td>Chicago, USA</td>
+                      <td>Finance</td>
+                      <td>Inactive</td>
+                      <td>2024-05-25</td>
                       <td>
-                        5
-                      </td>
-                      <td>
-                        Doris Greene
-                      </td>
-                      <td>
-                        Malawi
-                      </td>
-                      <td>
-                        Feldkirchen in Kärnten
-                      </td>
-                      <td>
-                        $63,542
+                        <a href="{% url 'user_details' %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="#edit003" class="btn btn-info btn-sm">Edit</a>
+                        <a href="#delete003" class="btn btn-danger btn-sm">Delete</a>
                       </td>
                     </tr>
                     <tr>
+                      <td>004</td>
+                      <td>Emily Davis</td>
+                      <td>emily.davis@example.com</td>
+                      <td>(321) 654-9870</td>
+                      <td>2023-04-10</td>
+                      <td>Houston, USA</td>
+                      <td>Human Resources</td>
+                      <td>Active</td>
+                      <td>2024-06-12</td>
                       <td>
-                        6
+                        <a href="{% url 'user_details' %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="#edit004" class="btn btn-info btn-sm">Edit</a>
+                        <a href="#delete004" class="btn btn-danger btn-sm">Delete</a>
                       </td>
+                    </tr>
+                    <tr>
+                      <td>005</td>
+                      <td>David Wilson</td>
+                      <td>david.wilson@example.com</td>
+                      <td>(456) 789-0123</td>
+                      <td>2023-05-05</td>
+                      <td>Miami, USA</td>
+                      <td>Sales</td>
+                      <td>Pending</td>
+                      <td>2024-05-30</td>
                       <td>
-                        Mason Porter
+                        <a href="{% url 'user_details' %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="#edit005" class="btn btn-info btn-sm">Edit</a>
+                        <a href="#delete005" class="btn btn-danger btn-sm">Delete</a>
                       </td>
+                    </tr>
+                    <tr>
+                      <td>006</td>
+                      <td>Linda Martinez</td>
+                      <td>linda.martinez@example.com</td>
+                      <td>(789) 012-3456</td>
+                      <td>2023-06-01</td>
+                      <td>San Francisco, USA</td>
+                      <td>Design</td>
+                      <td>Active</td>
+                      <td>2024-06-13</td>
                       <td>
-                        Chile
+                        <a href="{% url 'user_details' %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="#edit006" class="btn btn-info btn-sm">Edit</a>
+                        <a href="#delete006" class="btn btn-danger btn-sm">Delete</a>
                       </td>
+                    </tr>
+                    <tr>
+                      <td>007</td>
+                      <td>Robert Garcia</td>
+                      <td>robert.garcia@example.com</td>
+                      <td>(890) 123-4567</td>
+                      <td>2023-07-15</td>
+                      <td>Seattle, USA</td>
+                      <td>Engineering</td>
+                      <td>Inactive</td>
+                      <td>2024-05-15</td>
                       <td>
-                        Gloucester
-                      </td>
-                      <td>
-                        $78,615
+                        <a href="{% url 'user_details' %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="#edit007" class="btn btn-info btn-sm">Edit</a>
+                        <a href="#delete007" class="btn btn-danger btn-sm">Delete</a>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
+
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+
           </div>
         </div>
       </div>
     </div>
 </div>
+
 
 {% endblock content %}
