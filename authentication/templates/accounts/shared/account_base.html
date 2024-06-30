@@ -1,0 +1,29 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block title %} Profile {% endblock title %}
+
+{% block content %}
+
+<div class="container pt-5 p-0 mb-5">
+    <div class="row g-0">
+        <div class="col-sm-4 bg-light rounded border">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="{% url 'profile_view' %}" class="text-decoration-none">Profile</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'address_list' %}" class="text-decoration-none">Address</a>
+                </li>
+                <li class="list-group-item">Change Password</li>
+                <li class="list-group-item">Logout</li>
+            </ul>
+        </div>
+        <div class="col-sm-8 px-5">
+            {% block accounts_content %}
+                
+            {% endblock accounts_content %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

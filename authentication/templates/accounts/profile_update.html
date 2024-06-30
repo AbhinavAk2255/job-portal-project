@@ -1,0 +1,21 @@
+
+{% extends 'accounts/shared/account_base.html' %}
+
+
+{% block accounts_content %}
+    <div class="container-fluid">
+        <div class="d-flex">
+            <a aria-disabled="true" href="" class="ms-auto">Edit</a>
+        </div>
+        <h1 class="text-center">Edit Profile</h1>
+        
+        <form method="post">
+            {{ form.as_p }}
+            <div class="d-grid">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary mt-2">Save</button>
+            </div>
+        </form>
+    </div>
+{% endblock accounts_content %}
+    

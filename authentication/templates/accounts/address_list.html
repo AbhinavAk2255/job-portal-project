@@ -1,0 +1,36 @@
+{% extends 'accounts/shared/account_base.html' %}
+
+
+{% block accounts_content %}
+    <div class="container-fluid">
+        <div class="d-flex">
+            <a href="{% url 'address_create' %}" class="ms-auto">&plus; New Address</a>
+        </div>
+        <h1 class="text-center">Address List</h1>
+        
+        {% if not data %}
+            <div class="alert alert-info">
+                No address found. Please 
+                <a href="{% url 'address_create' %}" class="alert-link">&plus; Add new address here.</a>
+            </div>
+        {% endif %}
+            
+        {% for address in data %}
+            <div class="card">
+                <div class="card-header">
+                    <h5>{{ address.name }}</h5>
+                </div>
+                <div class="card-body">
+                    {{ address|safe }}
+                </div>
+                <div class="card-footer d-flex">
+                    <div class="btn-group ms-auto">
+                        <a href="{% url 'address_update' id=address.id %}" class="btn btn-primary">Edit</a>
+                        <a href="{% url 'address_delete' id=address.id %}" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock accounts_content %}
+    

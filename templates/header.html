@@ -47,9 +47,23 @@
       </div>
       {% endif %}
       <div class="profile-icons d-none d-lg-flex">
-        <a href="#" class="nav-link"><img src="../static/images/mail.svg" class="personal-icons" alt=""></a>
-        <a href="#" class="nav-link"><img src="../static/images/bell.svg" class="personal-icons" alt=""></a>
-        <a href="#" class="nav-link"><img src="../static/images/user.svg" class="personal-icons" alt=""></a>
+        
+        <!-- <a href="#" class="nav-link"><img src="../static/images/mail.svg" class="personal-icons" alt=""></a>
+        <a href="#" class="nav-link"><img src="../static/images/bell.svg" class="personal-icons" alt=""></a> -->
+        
+        {% if user.is_authenticated %}
+        <div class="dropdown">
+          <button class="dropbtn"><a href="#" class="nav-link"><img src="../static/images/user.svg" class="personal-icons" alt=""></a></button>
+          <div class="dropdown-content">
+              <a  href="#">{{user.first_name}}</a>
+
+              <a href="#">messages</a>
+              <a href="{% url 'profile_view' %}">Profile</a>
+              <a href="#">Logout</a>
+          </div>
+        </div>
+        {% endif %}
+
       </div>
     </div>
   </div>
