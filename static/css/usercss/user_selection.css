@@ -1,0 +1,109 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway:300, 700");
+
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.user-section {
+  height: 100%;
+  display: grid;
+  text-transform: lowercase;
+  font-family: "Raleway";
+  font-weight: 300;
+  vertical-align: middle;
+  padding: 200px;
+}
+
+#user-container {
+  margin: auto;
+  border: 2px solid black;
+  padding: 3.75rem 2rem 2rem;
+  position: relative;
+}
+
+#user-container p {
+  text-align: center;
+  font-size: 4rem;
+  animation: 0.4s appear;
+  padding: 1rem;
+  background: white;
+  position: absolute;
+  top: -7.5rem;
+  left: 4.6rem;
+  min-width: 500px;
+}
+
+.accent {
+  font-weight: 700;
+}
+
+.buttons-section {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  animation: 0.4s appear;
+  animation-delay: 0.2s;
+}
+
+.employe-btn {
+  position: relative;
+  background: none;
+  width: 400px;
+  height: 150px;
+  color: white;
+  border: none;
+  font-family: "Raleway";
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  cursor: pointer;
+  text-transform: lowercase;
+  z-index: 10;
+  transition: 0.4s;
+}
+.jobseeker-btn{
+    position: relative;
+    background: none;
+    width: 400px;
+    height: 150px;
+    color: white;
+    border: none;
+    font-family: "Raleway";
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: 5px;
+    cursor: pointer;
+    text-transform: lowercase;
+    z-index: 10;
+    transition: 0.4s;
+}
+
+.user-button .back {
+  width: 400px;
+  height: 150px;
+  position: absolute;
+  background: black;
+  z-index: -10;
+}
+
+.user-button {
+  position: relative;
+  overflow: hidden;
+  transition: 0.4s ease-in-out;
+}
+
+.user-button .appear {
+  position: absolute;
+  width: 4px;
+  height: 400px;
+  top: 0;
+  left: -7rem;
+  transition: 0.4s linear;
+  z-index: 1;
+}

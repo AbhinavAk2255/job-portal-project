@@ -7,7 +7,7 @@
     <div class="register-area">
         <div class="registration-container">
             <h1>Register</h1>
-            <form method="POST" action="{% url 'register_complete' %}">
+            <form method="POST">
                 {% csrf_token %}
                 
                 <div class="form-group">
@@ -37,7 +37,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Register</button>
                 
-                <a href="{% url 'login' %}" class="btn btn-transparent btn-block mt-2 w-full">Login</a>
+                <a href="{% url 'accounts:login' %}" class="btn btn-transparent btn-block mt-2 w-full">Login</a>
             </form>
             {% if messages %}
                 <div class="message_container">

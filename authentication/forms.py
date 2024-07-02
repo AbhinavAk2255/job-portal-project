@@ -1,6 +1,6 @@
 from typing import Any
 from django.forms import ModelForm, Form, EmailInput, Select, RadioSelect, CheckboxInput
-from django.forms import TextInput, PasswordInput, CharField, Textarea, FileInput, DateInput
+from django.forms import TextInput, PasswordInput, CharField, Textarea, FileInput, DateInput,NumberInput,IntegerField,ImageField,ClearableFileInput,ChoiceField,DateField,SelectMultiple
 from .models import *
 from django.core.validators import MinLengthValidator
 from django import forms
@@ -52,6 +52,7 @@ class UserRegisterForm(ModelForm):
             'email',
             'username',
             'password',
+
         ]
         
         widgets = {
@@ -78,11 +79,12 @@ class UserRegisterForm(ModelForm):
             'password': PasswordInput({
                 'class':'form-control',
                 'placeholder':'Password'
-            })
+            }),
+
         }
 
 
-class UserRegistrationCompleteForm(ModelForm):
+class DetailRegistration(ModelForm):
     class Meta():
         model = User
         fields = [
@@ -292,3 +294,75 @@ class ProfileUpdateForm(ModelForm):
                 'class': 'form-control'
             })
         }
+
+
+#user activities form
+
+class ActivitiesForm(ModelForm):
+    class Meta:
+        model = UserActivity
+        fields = '__all__'
+        exclude = ['user']
+        
+        widgets = {
+
+            'date_of_birth' : DateInput({
+                'class': 'form-control',
+                'type' : 'date'
+                
+            }),
+            'Hobbies' : SelectMultiple({
+                'class': 'form-control',
+                
+            }),
+            'qualification' : Select({
+                'class': 'form-control',
+                'Placeholder' : 'Highest Qualification'
+                
+            }),
+            'Interest' : SelectMultiple({
+                'class': 'form-control',
+                
+            }),
+
+            'smoking_habit' : CheckboxInput({
+                
+                
+            }),
+            'drinking_habit' : CheckboxInput({
+                
+                
+            }),
+            'profile_picture' : FileInput({
+                'class': 'form-control',
+                
+            }),
+            'images' : FileInput({
+                'class': 'form-control',
+                
+            }),
+            'short_reel' : FileInput({
+                'class': 'form-control',
+                
+            }),
+
+
+        }
+
+
+class QualificationsForm(ModelForm):
+    class Meta:
+        model = UserQualifications
+        exclude = ["user"]
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+
+        if start_date and end_date:
+            if start_date >= end_date:
+                raise forms.ValidationError("Start date must be earlier than end date.")
+
+        return cleaned_data
+

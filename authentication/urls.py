@@ -1,10 +1,14 @@
 from django.urls import path
 from .views import *
 
+app_name = 'accounts'
+
 urlpatterns = [
     path('login/',user_login.as_view(),name='login'),
     path('register/', RegisterView.as_view(), name='register'),
-    path('register_profile/', RegisterCompleteView.as_view(), name='register_complete'),
+    # path('register_profile/', RegisterCompleteView.as_view(), name='register_complete'),
+    path('user_activities/',ActivitiesCreateView.as_view(), name='user_activity'),
+    path('userselection/', UserSelection.as_view(), name='user_seleciton'),
     path('logout/',signout.as_view(),name='logout'),
 
     # default buid in reset_password urls

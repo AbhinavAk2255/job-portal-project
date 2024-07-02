@@ -43,7 +43,10 @@ INSTALLED_APPS = [
     'jobapp',
     'Adminapp',
     'authentication',
+
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

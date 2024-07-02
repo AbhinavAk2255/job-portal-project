@@ -1,0 +1,32 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block title %} User Selection {% endblock title %}
+
+{% block content %}
+
+<section class="user-section">
+    <div id="user-container">
+
+        <p>Do you wish to <span class="accent">continue?</span></p>
+    
+        <div class="buttons-section">
+    
+    
+            <div class="user-button">
+    
+                <div class="back"></div>
+                <button class="employe-btn" type="button">Employer </button>
+                <div class="appear confirm"></div>
+            </div>
+            <div class="user-button">
+                
+                <div class="back">
+                <div class="appear cancel"></div>
+                </div>
+                <button class="jobseeker-btn" type="button">Job Seeker</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

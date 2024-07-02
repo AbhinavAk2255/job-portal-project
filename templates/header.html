@@ -38,12 +38,12 @@
       </ul>
       {% if user.is_authenticated %}
       <div class="auth">
-        <a href="{% url 'logout' %}"><button class="login-btn">Logout</button></a>
+        <a href="{% url 'accounts:logout' %}"><button class="login-btn">Logout</button></a>
       </div>
       {% else %}
       <div class="auth">
-        <a href="{% url 'login' %}"><button class="login-btn">Login</button></a>
-        <a href="{% url 'register' %}"><button class="reg-btn">Register</button></a>
+        <a href="{% url 'accounts:login' %}"><button class="login-btn">Login</button></a>
+        <a href="{% url 'accounts:register' %}"><button class="reg-btn">Register</button></a>
       </div>
       {% endif %}
       <div class="profile-icons d-none d-lg-flex">
@@ -58,7 +58,7 @@
               <a  href="#">{{user.first_name}}</a>
 
               <a href="#">messages</a>
-              <a href="{% url 'profile_view' %}">Profile</a>
+              <a href="{% url 'accounts:profile_view' %}">Profile</a>
               <a href="#">Logout</a>
           </div>
         </div>

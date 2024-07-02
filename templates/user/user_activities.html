@@ -6,48 +6,63 @@
 
     <div class="register-area">
         <div class="registration-container">
-            <h1>Register Profil</h1>
-            <form method="POST">
+            <h1>Profile</h1>
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 
                 <div class="form-group">
-                    {{ form.profile_photo }}
+                    {{ form.age }}
                    
                     <!-- <input type="text" class="form-control" id="Username" name="Username" placeholder="Username"> -->
                 </div>
                 <div class="form-group">
-                    {{ form.phone }}
+                    {{ form.date_of_birth }}
                     <!-- <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"> -->
                 </div>
                 <div class="form-group">
-                    <label for="">{{ form.dob.label }}</label>
-                    {{ form.dob }}
+                    {{ user.age }}
+                    <!-- <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"> -->
+                </div>
+                <div class="form-group">
+                    <!-- <label for="">{{ form.dob.label }}</label> -->
+                    {{ form.Hobbies }}
                     <!-- <input type="password" class="form-control" id="password" name="password" placeholder="Password"> -->
                 </div>
                 <div class="form-group">
                     
-                    {{ form.short_bio }}
+                    {{ form.Interest }}
                     <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
                 </div>
                 <div class="form-group">
-                    {{ form.job_title }}
+                    
+                    {{ form.qualification }}
                     <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
                 </div>
                 <div class="form-group">
-                    <label for="">{{ form.gender.label }}</label>
-                    {{ form.gender }}
+                    <label for="">{{ form.smoking_habit.label }}</label>
+                    {{ form.smoking_habit }}
                     <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
                 </div>
                 <div class="form-group">
-                    <label for="">{{ form.country.label }}</label>
-                    {{ form.country }}
+                    <label for="">{{ form.drinking_habit.label }}</label>
+                    {{ form.drinking_habit }}
                     <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
                 </div>
                 <div class="form-group">
-                    {{ form.open_to_hiring }}
+                    <!-- <label for="">{{ form.country.label }}</label> -->
+                    {{ form.profile_picture }}
+                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                </div>
+                <div class="form-group">
+                    {{ form.images }}
+                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                </div>
+                <div class="form-group">
+                    {{ form.short_reel }}
                     <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Save</button>
+                {{ form.errors }}
                 
             </form>
             {% if messages %}

@@ -1,5 +1,6 @@
 from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
+from django.http import HttpRequest
 from django.shortcuts import render,redirect,HttpResponseRedirect,HttpResponse,get_object_or_404
 from .models import *
 from django.contrib import messages
@@ -13,6 +14,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, ListView, View, FormView, UpdateView, TemplateView
 from django.urls import reverse, reverse_lazy
 
@@ -22,7 +24,7 @@ from django.urls import reverse, reverse_lazy
 class signout(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
-        return redirect('login')
+        return redirect(reverse('accounts:login'))
 
 
 class user_login(View):
@@ -40,80 +42,87 @@ class user_login(View):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect('/')
             else:
-                return messages.error(request, 'Invalid username or password')
+                return HttpResponse('Invalid username or password')
         return render(request, self.template_name, {'form': form})
     
 
 
-class RegisterView(FormView):
+class RegisterView(View):
     form_class = UserRegisterForm
     template_name = 'user/Register.html'
-    success_url = reverse_lazy('register_complete')
+    success_url = reverse_lazy('accounts:user_activity')
 
-    def form_valid(self, form):
-        self.request.session['registration_data'] = form.cleaned_data
-        print("Saved to session:", self.request.session['registration_data'])
-        return super().form_valid(form)
-
-
-    
-
-
-class RegisterCompleteView(FormView):
-
-    form_class = UserRegistrationCompleteForm
-    template_name = 'user/complete_register.html'
-    success_url = reverse_lazy('login')
-
-    def get_form_kwargs(self):
-        form_kwargs = super().get_form_kwargs()
-        registration_data = self.request.session.get('registration_data', {})
-        form_kwargs.update({'initial': registration_data})
-        return form_kwargs
-    
-    def form_valid(self, form):
-        registration_data = self.request.session.get('registration_data', {})
-        if not registration_data:
-            return redirect('register')
-
-        user = User.objects.create(
-            username = registration_data['username'],
-            email = registration_data['email'],
-            first_name = registration_data['first_name'],
-            last_name = registration_data['last_name'],
-            phone = form.cleaned_data['phone'],
-            profile_photo = form.cleaned_data['profile_photo'],
-            dob = form.cleaned_data['dob'],
-            short_bio = form.cleaned_data['short_bio'],
-            job_title = form.cleaned_data['job_title'],
-            gender = form.cleaned_data['gender'],
-            country = form.cleaned_data['country'],
-            open_to_hiring = form.cleaned_data['open_to_hiring'],
-
-        )
-        user.set_password(registration_data['password'])
-        user.save()
-
-        # Clear session data
-        del self.request.session['registration_data']
-
-        # Log the user in and redirect to success page
+    def get(self, request):
         
+        return render(request, self.template_name, {'form': self.form_class()})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if not form.is_valid():
+            return render(request, self.template_name, {'form': form})
+
+        user = form.save(commit=False)
+        user.set_password(user.password)
+        user.save()        
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        user = authenticate(request, username=username, password=password)
+
+        login(request, user)
+        return redirect(reverse('accounts:user_activity'))
+    
+    
+
+# class RegisterCompleteView(LoginRequiredMixin, View):
+#     form_class = DetailRegistration
+#     template_name = 'user/complete_register.html'
+#     success_url = reverse_lazy('login')
+
+#     def get(self, request):
+#         return render(request, self.template_name, {'form': self.form_class()})
+    
+#     def post(self, request):
+#         form = self.form_class(request.POST)
+#         if not form.is_valid():
+#             return render(request, self.template_name, {'form': form})
+        
+#         user = self.request.user
+        
+#         user.phone = form.cleaned_data['phone']
+#         user.dob = form.cleaned_data['dob']
+#         user.short_bio = form.cleaned_data['short_bio']
+#         user.job_title = form.cleaned_data['job_title']
+#         user.gender = form.cleaned_data['gender']
+#         user.country = form.cleaned_data['country']
+#         user.open_to_hiring = form.cleaned_data['open_to_hiring']
+#         if 'profile_photo' in form.cleaned_data:
+#             user.profile_photo = form.cleaned_data['profile_photo']
+#             user.save()
+
+#         return redirect(reverse('home'))
+
+
+
+
+class ActivitiesCreateView(LoginRequiredMixin, CreateView):
+    model = UserActivity
+    form_class = ActivitiesForm
+    template_name = 'user/user_activities.html'
+    success_url = reverse_lazy('accounts:user_seleciton')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
         return super().form_valid(form)
 
-    
-
-    
 
 
+class UserSelection(View):
 
-    
+    def get(self, request):
+        return render(request, 'user/userSelection.html')
 
-
-def edit_profile(request):
-    return render(request,'user/edit_profil.html')
 
 
 def CustomForgotPassword(request):
@@ -217,7 +226,7 @@ class AddressListVew(LoginRequiredMixin, ListView):
 class AddressCreateView(LoginRequiredMixin, CreateView):
     form_class = AddressCreationForm
     template_name = 'accounts/address_upsert.html'
-    success_url = reverse_lazy('address_list')
+    success_url = reverse_lazy('accounts:address_list')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -228,7 +237,7 @@ class AddressUpdateView(LoginRequiredMixin, UpdateView):
     form_class = AddressCreationForm
     model = Address
     template_name = 'accounts/address_upsert.html'
-    success_url = reverse_lazy('address_list')
+    success_url = reverse_lazy('accounts:address_list')
     pk_url_kwarg = 'id'
 
     def get_queryset(self):
@@ -241,7 +250,7 @@ class AddressDeleteView(LoginRequiredMixin, View):
         id = kwargs.get('id')
         address = get_object_or_404(Address, id=id, user = request.user)
         address.delete()
-        return redirect('address_list')
+        return redirect('accounts:address_list')
     
 
 
@@ -256,7 +265,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 class ProfileUpdateView(LoginRequiredMixin, FormView):
     form_class = ProfileUpdateForm
     template_name = 'accounts/profile_update.html'
-    success_url = reverse_lazy('profile_view')
+    success_url = reverse_lazy('accounts:profile_view')
 
     def get_form_kwargs(self):
         form_args =  super().get_form_kwargs()
