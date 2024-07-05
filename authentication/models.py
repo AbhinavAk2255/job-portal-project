@@ -17,10 +17,7 @@ class User(AbstractUser):
     )
 
     phone = models.CharField(max_length=15, blank=True, null=True)
-    profile_photo = models.ImageField(upload_to='user_photos/', blank=True, null=True)
-    dob = models.DateField(blank=True, null=True)
     short_bio = models.TextField(max_length=500, blank=True, null=True)
-    job_title = models.CharField(max_length=255, blank=True, null=True)
     gender = models.CharField(max_length=1, default='M', choices=GENDER_CHOICES)
     country = models.CharField(max_length=50, default='IN', choices=COUNTRY_CHOICES)
     open_to_hiring = models.BooleanField(default=False)
@@ -148,3 +145,39 @@ class UserIntrests(models.Model):
     class Meta:
         unique_together = ('user', 'interest')
 
+
+class JobTitle(models.Model):
+    title = models.CharField(max_length=255, unique=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Employment(models.Model):
+
+    EXPERIANCE_LEVEL = (
+        ("beginner", "Beginner"),
+        ("intermediate", "Intermediate"),
+        ("expert", "Expert"),
+    )
+
+    EMPLOYEE_TYPE = (
+        ("job seeker", "JOB SEEKER"),
+        ("employer", "EMPLOYER"),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    employe = models.CharField(max_length=100, choices=EMPLOYEE_TYPE, null=True, blank=True)
+    company_name = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    designation = models.CharField(max_length=255, null=True)
+    location = models.CharField(max_length=255, null=True)
+    job_title = models.ForeignKey(JobTitle, on_delete=models.CASCADE, null=True, blank=True)
+    expertise_level = models.CharField(max_length=255, null=True, blank=True, choices=EXPERIANCE_LEVEL)
+
+
+class Jobs(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    job_title = models.OneToOneField(JobTitle, on_delete=models.CASCADE)
+    Description = models.TextField(max_length=255)
+    # company_name = models.ForeignKey(UserActivity, )

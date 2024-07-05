@@ -1,6 +1,6 @@
 from typing import Any
-from django.forms import ModelForm, Form, EmailInput, Select, RadioSelect, CheckboxInput
-from django.forms import TextInput, PasswordInput, CharField, Textarea, FileInput, DateInput,NumberInput,IntegerField,ImageField,ClearableFileInput,ChoiceField,DateField,SelectMultiple
+from django.forms import CharField, ModelForm, Form, EmailInput, PasswordInput, Select, RadioSelect, CheckboxInput, TextInput
+from django.forms import  CharField, Textarea, FileInput, DateInput,NumberInput,IntegerField,ImageField,ClearableFileInput,ChoiceField,DateField,SelectMultiple
 from .models import *
 from django.core.validators import MinLengthValidator
 from django import forms
@@ -84,56 +84,56 @@ class UserRegisterForm(ModelForm):
         }
 
 
-class DetailRegistration(ModelForm):
-    class Meta():
-        model = User
-        fields = [
-            'phone',
-            'profile_photo',
-            'dob',
-            'short_bio',
-            'job_title',
-            'gender',
-            'country',
-            'open_to_hiring'
-        ]
+# class DetailRegistration(ModelForm):
+#     class Meta():
+#         model = User
+#         fields = [
+#             'phone',
+#             'profile_photo',
+#             'dob',
+#             'short_bio',
+#             'job_title',
+#             'gender',
+#             'country',
+#             'open_to_hiring'
+#         ]
         
-        widgets = {
+#         widgets = {
 
-            'phone': TextInput({
-                'class':'form-control',
-                'placeholder':'Phone'
-            }),
+#             'phone': TextInput({
+#                 'class':'form-control',
+#                 'placeholder':'Phone'
+#             }),
 
-            'dob': DateInput({
-                'class': 'form-control'
-            }),
+#             'dob': DateInput({
+#                 'class': 'form-control'
+#             }),
 
-            'short_bio': Textarea({
-                'class': 'form-control',
-                'rows': '3',
-                'placeholder': 'Short Bio'
-            }),
+#             'short_bio': Textarea({
+#                 'class': 'form-control',
+#                 'rows': '3',
+#                 'placeholder': 'Short Bio'
+#             }),
 
-            'job_title': TextInput({
-                'class': 'form-control',
-                'placeholder': 'Job Title'
-            }),
+#             'job_title': TextInput({
+#                 'class': 'form-control',
+#                 'placeholder': 'Job Title'
+#             }),
 
-            'gender': Select({
-                'class': 'form-control'
-            }),
+#             'gender': Select({
+#                 'class': 'form-control'
+#             }),
 
-            'country': Select({
-                'class': 'form-control'
-            }),
+#             'country': Select({
+#                 'class': 'form-control'
+#             }),
 
-            'open_to_hiring': CheckboxInput(),
+#             'open_to_hiring': CheckboxInput(),
 
-            'profile_photo': FileInput({
-                'class': 'form-control'
-            })
-        }
+#             'profile_photo': FileInput({
+#                 'class': 'form-control'
+#             })
+#         }
     
 
 
@@ -237,10 +237,7 @@ class ProfileUpdateForm(ModelForm):
             'username',
             'email',
             'phone',
-            'profile_photo',
-            'dob',
             'short_bio',
-            'job_title',
             'gender',
             'country',
             'open_to_hiring'
@@ -266,18 +263,9 @@ class ProfileUpdateForm(ModelForm):
             'phone': TextInput({
                 'class': 'form-control'
             }),
-
-            'dob': TextInput({
-                'class': 'form-control'
-            }),
-
             'short_bio': Textarea({
                 'class': 'form-control',
                 'rows': '3'
-            }),
-
-            'job_title': TextInput({
-                'class': 'form-control',
             }),
 
             'gender': Select({
@@ -289,10 +277,6 @@ class ProfileUpdateForm(ModelForm):
             }),
 
             'open_to_hiring': CheckboxInput(),
-
-            'profile_photo': FileInput({
-                'class': 'form-control'
-            })
         }
 
 
@@ -366,3 +350,51 @@ class QualificationsForm(ModelForm):
 
         return cleaned_data
 
+
+# empoloyer registration form
+
+class EmployerForm(ModelForm):
+    
+    class Meta:
+        model = Employment
+        fields = ['company_name', 'designation', 'location', 'employe']
+        widgets = {
+            'company_name' : TextInput({
+                'class': 'form-control',
+                'placeholder': 'Company Name'
+                
+            }),
+            'designation' : TextInput({
+                'class': 'form-control',
+                'placeholder': 'Designation'
+                
+            }),
+            'location' : TextInput({
+                'class': 'form-control',
+                'placeholder': 'Location'
+                
+            }),
+            'employe' : Select({
+                
+            }),
+
+        }
+
+
+class JobSeekerForm(ModelForm):
+    
+    class Meta:
+        model = Employment
+        fields = ['job_title', 'expertise_level']
+        widgets = {
+            'job_title' : Select({
+                'class': 'form-control',
+                'placeholder': 'Job Title'
+                
+            }),
+            'expertise_level' : Select({
+                'class': 'form-control',
+                'placeholder': 'Expertise Level'
+                
+            }),
+        }

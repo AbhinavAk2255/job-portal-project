@@ -125,6 +125,36 @@ class UserSelection(View):
 
 
 
+class JobPost(View):
+
+    def get(self, request):
+        return render(request, 'user/job_post.html')
+
+
+
+class EmployerRegister(LoginRequiredMixin, CreateView):
+    model = Employment
+    form_class = EmployerForm
+    template_name = 'user/employer_registration.html'
+    success_url = reverse_lazy('accounts:job_post')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class JobSeekerRegister(LoginRequiredMixin, CreateView):
+    model = Employment
+    form_class = JobSeekerForm
+    template_name = 'user/job_seeker_register.html'
+    success_url = reverse_lazy('base:home')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+
 def CustomForgotPassword(request):
     
     context = {}

@@ -7,7 +7,7 @@
 <section class="user-section">
     <div id="user-container">
 
-        <p>Do you wish to <span class="accent">continue?</span></p>
+        <p>who you  <span class="accent">are?</span></p>
     
         <div class="buttons-section">
     
@@ -15,7 +15,7 @@
             <div class="user-button">
     
                 <div class="back"></div>
-                <button class="employe-btn" type="button">Employer </button>
+                <a href="{% url 'accounts:employer_register' %}"><button class="employe-btn" type="button">Employer </button></a>
                 <div class="appear confirm"></div>
             </div>
             <div class="user-button">
@@ -23,7 +23,7 @@
                 <div class="back">
                 <div class="appear cancel"></div>
                 </div>
-                <button class="jobseeker-btn" type="button">Job Seeker</button>
+                <a href="{% url 'accounts:jobseeker_register' %}"><button class="jobseeker-btn" type="button">Job Seeker</button></a>
             </div>
         </div>
     </div>
