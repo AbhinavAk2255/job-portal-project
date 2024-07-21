@@ -282,11 +282,11 @@ class ProfileUpdateForm(ModelForm):
 
 #user activities form
 
-class ActivitiesForm(ModelForm):
+class SecondRegistration(ModelForm):
     class Meta:
-        model = UserActivity
-        fields = '__all__'
-        exclude = ['user']
+        model = User
+        fields = ['date_of_birth', 'Hobbies', 'qualification', 'Interest', 'smoking_habit', 'drinking_habit', 'profile_picture', 'images', 'short_reel']
+
         
         widgets = {
 
@@ -353,10 +353,10 @@ class QualificationsForm(ModelForm):
 
 # empoloyer registration form
 
-class EmployerForm(ModelForm):
+class EmployerRegisterForm(ModelForm):
     
     class Meta:
-        model = Employment
+        model = User
         fields = ['company_name', 'designation', 'location', 'employe']
         widgets = {
             'company_name' : TextInput({
@@ -375,16 +375,17 @@ class EmployerForm(ModelForm):
                 
             }),
             'employe' : Select({
+                'class': 'form-control',
                 
             }),
 
         }
 
 
-class JobSeekerForm(ModelForm):
+class JobSeekerRegisterForm(ModelForm):
     
     class Meta:
-        model = Employment
+        model = User
         fields = ['job_title', 'expertise_level']
         widgets = {
             'job_title' : Select({
@@ -398,3 +399,7 @@ class JobSeekerForm(ModelForm):
                 
             }),
         }
+
+
+# job post form
+

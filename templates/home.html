@@ -4,13 +4,13 @@
 {% block content %}
 
 <section class="home-section">
-    <div class="container">
+    <div class="home-container">
         <div class="row">
             <div class="col-xl-8">
                 <!-- form -->
-                <form action="#" class="search-box">
+                <form method="get" action="{% url 'base:home' %}" class="search-box">
                     <div class="input-form">
-                        <input type="text" placeholder="Job home-sectionTittle or keyword">
+                        <input type="text" placeholder="Job home-sectionTittle or keyword" name="search">
                     </div>
                     <div class="select-form">
                         <div class="select-itms">
@@ -34,68 +34,70 @@
                         </div>
                     </div>
                     <div class="search-form">
-                        <a href="#">Find job</a>
+                        <button>Find job</button>
                     </div>	
                 </form>	
             </div>
             <p><span><a href="">Post a job today</a></span>and connect with quality candidates</p>
         </div>
 
-    </div>
+        <div class="joblist-area">
+            <div class="job-lists">
+                {% for job in jobs %}
+                <div class="job-card">
+                    <div class="job-header">
+                        <div class="job-company">
+                            <img src="https://via.placeholder.com/60" alt="Company Logo">
+                            <div>
+                                <div class="job-title">{{ job.job_title }}</div>
+                                <div class="job-meta">
+                                    <span><i class="fas fa-map-marker-alt"></i>{{ job.location }}</span>
+                                    <span><i class="fas fa-calendar-alt"></i> {{ job.date_posted }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="far fa-bookmark"></i>
+                    </div>
+                    <div class="job-tags">
+                        
+                        <div class="job-tag remote">{{ job.job_mode }}</div>
+                        
+                        
+                    </div>
+                    
+                    <div class="job-footer">
+                        <div><i class="fas fa-dollar-sign"></i> ${{ job.salary_min }} - ${{ job.salary_max }} /{{ job.salary_type }}</div>
+                        <div><i class="fas fa-users"></i> {{ job.vacancies }} Vacancy</div>
+                        <div><a href="?jobs={{job.id}}" class="btn btn-primary">View More</a></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="job-details">
+                {% if job_description.Description %}
+                <div class="card">
+                    <div class="card-header" style="display: flex;justify-content: space-between;">
+                        
+                        {{job_description.job_title}}
+                        <a href="{% url 'jobs:job_applying' job_description.id %}" class="btn btn-primary">Apply</a>
+                    </div>
+                    <div class="card-body job-card-body">
+                            <p class="card-text">{{job_description.Description|safe}}</p>
+                            
+                    </div>
+                  </div>
+                  {% else %}
 
-    <div class="joblist-area">
-        <div class="job-lists">
-            <div class="job-card">
-                <div class="job-header">
-                    <div class="job-company">
-                        <img src="https://via.placeholder.com/60" alt="Company Logo">
-                        <div>
-                            <div class="job-title">Rockstar Games New York</div>
-                            <div class="job-meta">
-                                <span><i class="fas fa-map-marker-alt"></i> Las Vegas, USA</span>
-                                <span><i class="fas fa-calendar-alt"></i> 2 Days ago</span>
-                            </div>
-                        </div>
-                    </div>
-                    <i class="far fa-bookmark"></i>
-                </div>
-                <div class="job-tags">
-                    <div class="job-tag">Full Time</div>
-                    <div class="job-tag remote">Remote</div>
-                </div>
-                <div class="job-footer">
-                    <div><i class="fas fa-dollar-sign"></i> $23,000 - $25,000 /Month</div>
-                    <div><i class="fas fa-users"></i> 7 Vacancy</div>
-                </div>
+                  {% endif %}
             </div>
-            <div class="job-card">
-                <div class="job-header">
-                    <div class="job-company">
-                        <img src="https://via.placeholder.com/60" alt="Company Logo">
-                        <div>
-                            <div class="job-title">Rockstar Games New York</div>
-                            <div class="job-meta">
-                                <span><i class="fas fa-map-marker-alt"></i> Las Vegas, USA</span>
-                                <span><i class="fas fa-calendar-alt"></i> 2 Days ago</span>
-                            </div>
-                        </div>
-                    </div>
-                    <i class="far fa-bookmark"></i>
-                </div>
-                <div class="job-tags">
-                    <div class="job-tag">Full Time</div>
-                    <div class="job-tag remote">Remote</div>
-                </div>
-                <div class="job-footer">
-                    <div><i class="fas fa-dollar-sign"></i> $23,000 - $25,000 /Month</div>
-                    <div><i class="fas fa-users"></i> 7 Vacancy</div>
-                </div>
-            </div>
+            
         </div>
-        <div class="job-details">
-            hello
-        </div>
+
+        
+    
     </div>
+    
+    
 
     <script>
         document.querySelector('.nice-select').addEventListener('click', function() {
@@ -111,4 +113,17 @@
     </script>
 </section>
 
+<div class="next-page">
+    <!-- {% if jobs.has_previous %}
+    <a href="?page={{products.previous_page_number}}"><span><<</span></a>
+    {% endif %} -->
+    {% for i in jobs.paginator.page_range %}
+    <a href="?page={{i}}"><span>{{i}}</span></a>
+    {% endfor %}
+
+    <!-- {% if jobs.has_next %}
+    <a href="?page={{products.next_page_number}}"><span>>></span></a>
+    {% endif %} -->
+</div> 
 {% endblock content %}
+

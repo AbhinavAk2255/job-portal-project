@@ -1,0 +1,58 @@
+{% extends 'layout/base.html' %}
+{% block title %} Job Applying {% endblock title %}
+
+{% block content %}
+
+
+<div class="application_container">
+  
+  <div class="left-panel">
+    <h3>Apply Now!</h3>
+
+    <div class="form-container">
+      <form method="POST">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="name">Name</label>
+            {{ form.name }}
+            <!-- <input type="text" class="form-control" id="name" placeholder="Enter your name"> -->
+        </div>
+        <div class="form-group">
+            <label for="company">Company</label>
+            {{ form.company }}
+            <!-- <input type="text" class="form-control" id="company" placeholder="Enter your company name"> -->
+        </div>
+        <div class="form-group">
+            <label for="designation">Designation</label>
+            {{ form.designation }}
+            <!-- <input type="text" class="form-control" id="designation" placeholder="Enter your designation"> -->
+        </div>
+        <div class="form-group">
+            <label for="salary">Salary CTC</label>
+            {{ form.salary }}
+            <!-- <input type="number" class="form-control" id="salary" placeholder="Enter your salary"> -->
+        </div>
+        <div class="form-group">
+            <label for="quitReason">Quit Reason</label>
+            {{ form.quit_reason }}
+            <!-- <input type="text" class="form-control" id="quitReason" placeholder="Enter your reason for quitting"> -->
+        </div>
+        <button type="submit" class="btn btn-custom btn-block">Apply In</button>
+        {% if form.errors %}
+          {% for error in form.errors %}
+              <li style="color: red;font-size: 10px;">{{error}}</li>
+          {% endfor %}
+        {% endif %}
+      </form>
+    </div>
+  </div>
+  <div class="right-panel">
+    <div class="job-detail">
+        {{ job.Description|safe }}
+        <a class="view-less" href="#">View less</a>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

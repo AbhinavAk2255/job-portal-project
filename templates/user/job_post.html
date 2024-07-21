@@ -1,1 +1,87 @@
-<h1>job postion</h1>
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block title %} Job Posting {% endblock title %}
+
+{% block content %}
+
+    <div class="register-area">
+        <div class="registration-container">
+            <h1>Post Jobs</h1>
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="">{{ form.job_title.label }}</label>
+                    {{ form.job_title }}
+                   
+                    <!-- <input type="text" class="form-control" id="Username" name="Username" placeholder="Username"> -->
+                </div>
+                <div class="form-group">
+                    {{ form.Description }}
+                    <!-- <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"> -->
+                </div>
+                <div class="form-group">
+                   <label for="">{{ form.company_name.label }}</label>
+                    <input type="text" value="{{ user.company_name }}" disabled class="form-control">
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        {{ form.salary_min }}
+                        <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                    </div>
+                    <div class="form-group col">
+                        {{ form.salary_max }}
+                        <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                    </div>
+                    <div class="form-group col">
+                       
+                        {{ form.salary_type }}
+                        <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="">{{ form.application_deadline.label }}</label>
+                    {{ form.application_deadline }}
+                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        {{ form.job_mode }}
+                        <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                    </div>
+                    <div class="form-group col">
+                        {{ form.vacancies }}
+                        <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                    </div>
+                    
+                </div>
+                <div class="form-group col">
+                    <!-- <label for="">{{ form.location.label }}</label> -->
+                    {{ form.location }}
+
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Save</button>
+                {% if form.errors %}
+                    {% for error in form.errors %}
+                        <li style="color: red;font-size: 10px;">{{error}}</li>
+                    {% endfor %}
+                {% endif %}
+            </form>
+            <!-- {% if messages %}
+                <div class="message_container">
+                    {% for message in messages %}
+                    <li style="font-size: 10px;" class="{{message.tags}}">{{message}}</li>
+                    {% endfor %}
+                </div>
+            {% endif %} -->
+        </div>
+    </div>
+
+    <script src="https://cdn.tiny.cloud/1/l2d33py63jvrypw7tjas3e9d24m6h3s55i7a66ilfmt2ub84/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({selector:'textarea'});
+    </script>
+
+    
+
+{% endblock content %}

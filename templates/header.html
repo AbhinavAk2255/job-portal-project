@@ -31,10 +31,17 @@
           <a class="nav-link" href="{% url 'base:home' %}">Company</a>
           
         </li>
+        {% if user.employe == 'employer' %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'jobs:job_post' %}">Post Jobs</a>
+          
+        </li>
+        {% else %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'base:home' %}">Jobs</a>
           
         </li>
+        {% endif %}
       </ul>
       {% if user.is_authenticated %}
       <div class="auth">

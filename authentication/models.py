@@ -4,6 +4,30 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
+class Hobbies(models.Model):
+    Hobbie = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.Hobbie
+    
+
+class Interest(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+    
+
+
+class JobTitle(models.Model):
+    title = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+    
+
+
+
 class User(AbstractUser):
         
 
@@ -16,12 +40,63 @@ class User(AbstractUser):
             ('IN', 'india'),
     )
 
+    QUALIFICATION_CHOICES = (
+
+        ("High School", "High School"),
+        ("Associate's Degree", "Associate's Degree"),
+        ("Bachelor's Degree", "Bachelor's Degree"),
+        ("Master's Degree", "Master's Degree"),
+        ("Doctorate", "Doctorate"),
+        ("Professional Degree", "Professional Degree"),
+        ("Diploma", "Diploma"),
+        ("Postdoctoral", "Postdoctoral"),
+        ("Vocational", "Vocational"),
+    )
+
+    EXPERIANCE_LEVEL = (
+        ("beginner", "Beginner"),
+        ("intermediate", "Intermediate"),
+        ("expert", "Expert"),
+    )
+
+    EMPLOYEE_TYPE = (
+        ("job seeker", "JOB SEEKER"),
+        ("employer", "EMPLOYER"),
+    )
+
     phone = models.CharField(max_length=15, blank=True, null=True)
+    date_of_birth = models.DateField(null=True)
+    Hobbies = models.ForeignKey(Hobbies, related_name='user_activities', on_delete=models.CASCADE, null=True, blank=True)
+    Interest = models.ForeignKey(Interest, related_name='user_activities', on_delete=models.CASCADE, null=True, blank=True)
     short_bio = models.TextField(max_length=500, blank=True, null=True)
     gender = models.CharField(max_length=1, default='M', choices=GENDER_CHOICES)
     country = models.CharField(max_length=50, default='IN', choices=COUNTRY_CHOICES)
     open_to_hiring = models.BooleanField(default=False)
+    smoking_habit = models.BooleanField(default=False)
+    drinking_habit = models.BooleanField(default=False)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True)
+    images = models.ImageField('Image/', blank=True)
+    short_reel = models.FileField(upload_to='short_reels/', blank=True)
+    qualification = models.CharField(max_length=255, blank=True, null=True, choices=QUALIFICATION_CHOICES)
+
+    employe = models.CharField(max_length=100, choices=EMPLOYEE_TYPE, null=True, blank=True)
+    company_name = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    designation = models.CharField(max_length=255, null=True)
+    location = models.CharField(max_length=255, null=True)
+    job_title = models.ForeignKey(JobTitle, on_delete=models.CASCADE, null=True, blank=True)
+    expertise_level = models.CharField(max_length=255, null=True, blank=True, choices=EXPERIANCE_LEVEL)
+
+    # def __str__(self):
+    #     return self username
+
+    def age(self):
+        if self.date_of_birth:
+            today = date.today()
+            age = today.year - self.date_of_birth.year - ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
+            return age
+        return None
     
+
 
 class Address(models.Model):
 
@@ -51,22 +126,10 @@ class Address(models.Model):
         {self.address_line_3}'''
 
 
-class Hobbies(models.Model):
-    
-    Hobbie = models.CharField(max_length=50, unique=True)
-
-    def __str__(self):
-        return self.Hobbie
 
 
-class Interest(models.Model):
-    
-    
-    name = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.name
-    
+
 class UserQualifications(models.Model):
     LEVEL_CHOICES = (
         ('high_school', 'High School'),
@@ -90,42 +153,6 @@ class UserQualifications(models.Model):
 
     
 
-class UserActivity(models.Model):
-
-    QUALIFICATION_CHOICES = (
-
-        ("High School", "High School"),
-        ("Associate's Degree", "Associate's Degree"),
-        ("Bachelor's Degree", "Bachelor's Degree"),
-        ("Master's Degree", "Master's Degree"),
-        ("Doctorate", "Doctorate"),
-        ("Professional Degree", "Professional Degree"),
-        ("Diploma", "Diploma"),
-        ("Postdoctoral", "Postdoctoral"),
-        ("Vocational", "Vocational"),
-    )   
-
-    user = models.ForeignKey(User, related_name='user_activities', on_delete=models.CASCADE)
-    date_of_birth = models.DateField()
-    Hobbies = models.ManyToManyField(Hobbies, related_name='user_activities')
-    Interest = models.ManyToManyField(Interest, related_name='user_activities')
-    smoking_habit = models.BooleanField(default=False)
-    drinking_habit = models.BooleanField(default=False)
-    profile_picture = models.ImageField(upload_to='profile_pics/')
-    images = models.ImageField('Image/', blank=True)
-    short_reel = models.FileField(upload_to='short_reels/')
-    qualification = models.CharField(max_length=255, blank=True, null=True, choices=QUALIFICATION_CHOICES)
-
-
-    def __str__(self):
-        return self.user.username
-    
-    def age(self):
-        if self.date_of_birth:
-            today = date.today()
-            age = today.year - self.date_of_birth.year - ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
-            return age
-        return None
 
 
 class UserHobbie(models.Model):
@@ -146,38 +173,7 @@ class UserIntrests(models.Model):
         unique_together = ('user', 'interest')
 
 
-class JobTitle(models.Model):
-    title = models.CharField(max_length=255, unique=True, null=True, blank=True)
-
-    def __str__(self):
-        return self.title
 
 
-class Employment(models.Model):
-
-    EXPERIANCE_LEVEL = (
-        ("beginner", "Beginner"),
-        ("intermediate", "Intermediate"),
-        ("expert", "Expert"),
-    )
-
-    EMPLOYEE_TYPE = (
-        ("job seeker", "JOB SEEKER"),
-        ("employer", "EMPLOYER"),
-    )
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    employe = models.CharField(max_length=100, choices=EMPLOYEE_TYPE, null=True, blank=True)
-    company_name = models.CharField(max_length=255, unique=True, null=True, blank=True)
-    designation = models.CharField(max_length=255, null=True)
-    location = models.CharField(max_length=255, null=True)
-    job_title = models.ForeignKey(JobTitle, on_delete=models.CASCADE, null=True, blank=True)
-    expertise_level = models.CharField(max_length=255, null=True, blank=True, choices=EXPERIANCE_LEVEL)
 
 
-class Jobs(models.Model):
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    job_title = models.OneToOneField(JobTitle, on_delete=models.CASCADE)
-    Description = models.TextField(max_length=255)
-    # company_name = models.ForeignKey(UserActivity, )

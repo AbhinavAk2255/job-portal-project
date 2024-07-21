@@ -1,0 +1,16 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block title %} Successfull {% endblock title %}
+
+{% block content %}
+
+<div class="center-container">
+    <div class="success-container">
+        <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+        <h1>Application Sent Successfully!</h1>
+        <p>Thank you for applying. We have received your application and will review it shortly. If your profile matches our requirements, we will get in touch with you soon.</p>
+        <a href="{% url 'base:home' %}" class="home-btn">Return to Home</a>
+    </div>
+</div>
+
+{% endblock content %}

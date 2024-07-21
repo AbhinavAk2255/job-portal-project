@@ -49,6 +49,8 @@ class user_login(View):
     
 
 
+# Register page 1
+
 class RegisterView(View):
     form_class = UserRegisterForm
     template_name = 'user/Register.html'
@@ -74,47 +76,47 @@ class RegisterView(View):
         return redirect(reverse('accounts:user_activity'))
     
     
+# Register page 2
 
-# class RegisterCompleteView(LoginRequiredMixin, View):
-#     form_class = DetailRegistration
-#     template_name = 'user/complete_register.html'
-#     success_url = reverse_lazy('login')
-
-#     def get(self, request):
-#         return render(request, self.template_name, {'form': self.form_class()})
-    
-#     def post(self, request):
-#         form = self.form_class(request.POST)
-#         if not form.is_valid():
-#             return render(request, self.template_name, {'form': form})
-        
-#         user = self.request.user
-        
-#         user.phone = form.cleaned_data['phone']
-#         user.dob = form.cleaned_data['dob']
-#         user.short_bio = form.cleaned_data['short_bio']
-#         user.job_title = form.cleaned_data['job_title']
-#         user.gender = form.cleaned_data['gender']
-#         user.country = form.cleaned_data['country']
-#         user.open_to_hiring = form.cleaned_data['open_to_hiring']
-#         if 'profile_photo' in form.cleaned_data:
-#             user.profile_photo = form.cleaned_data['profile_photo']
-#             user.save()
-
-#         return redirect(reverse('home'))
-
-
-
-
-class ActivitiesCreateView(LoginRequiredMixin, CreateView):
-    model = UserActivity
-    form_class = ActivitiesForm
+class RegisterCompleteView(LoginRequiredMixin, View):
+    form_class = SecondRegistration
     template_name = 'user/user_activities.html'
-    success_url = reverse_lazy('accounts:user_seleciton')
+    # success_url = reverse_lazy('accounts:user_seleciton)
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+    def get(self, request):
+        return render(request, self.template_name, {'form': self.form_class()})
+    
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if not form.is_valid():
+            return render(request, self.template_name, {'form': form})
+        
+        user = self.request.user
+        
+        user.date_of_birth = form.cleaned_data['date_of_birth']
+        user.Hobbies = form.cleaned_data['Hobbies']
+        user.qualification = form.cleaned_data['qualification']
+        user.Interest = form.cleaned_data['Interest']
+        user.smoking_habit = form.cleaned_data['smoking_habit']
+        user.drinking_habit = form.cleaned_data['drinking_habit']
+        if 'profile_picture' in form.cleaned_data:
+            user.profile_picture = form.cleaned_data['profile_picture']
+            user.save()
+
+        return redirect(reverse('accounts:user_seleciton'))
+
+
+
+
+# class ActivitiesCreateView(LoginRequiredMixin, CreateView):
+#     model = UserActivity
+#     form_class = ActivitiesForm
+#     template_name = 'user/user_activities.html'
+#     success_url = reverse_lazy('accounts:user_seleciton')
+
+#     def form_valid(self, form):
+#         form.instance.user = self.request.user
+#         return super().form_valid(form)
 
 
 
@@ -125,33 +127,63 @@ class UserSelection(View):
 
 
 
-class JobPost(View):
+
+
+
+# Employer Register page
+
+class EmployerRegisterView(LoginRequiredMixin, CreateView):
+
+    form_class = EmployerRegisterForm
+    template_name = 'user/employer_registration.html'
+    # success_url = reverse_lazy('accounts:user_seleciton)
 
     def get(self, request):
-        return render(request, 'user/job_post.html')
+        return render(request, self.template_name, {'form': self.form_class()})
+    
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if not form.is_valid():
+            return render(request, self.template_name, {'form': form})
+        
+        user = self.request.user
+        
+        user.company_name = form.cleaned_data['company_name']
+        user.designation = form.cleaned_data['designation']
+        user.location = form.cleaned_data['location']
+        user.employe = form.cleaned_data['employe']
+        user.save()
+
+        return redirect(reverse('jobs:job_post'))
+    
 
 
 
-class EmployerRegister(LoginRequiredMixin, CreateView):
-    model = Employment
-    form_class = EmployerForm
-    template_name = 'user/employer_registration.html'
-    success_url = reverse_lazy('accounts:job_post')
+# job seeker Register page
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
-
-class JobSeekerRegister(LoginRequiredMixin, CreateView):
-    model = Employment
-    form_class = JobSeekerForm
+class JobSeekerRegisterView(LoginRequiredMixin, View):
+    form_class = JobSeekerRegisterForm
     template_name = 'user/job_seeker_register.html'
-    success_url = reverse_lazy('base:home')
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+
+    def get(self, request):
+        return render(request, self.template_name, {'form': self.form_class()})
+    
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if not form.is_valid():
+            return render(request, self.template_name, {'form': form})
+        
+        user = self.request.user
+        
+        user.job_title = form.cleaned_data['job_title']
+        user.expertise_level = form.cleaned_data['expertise_level']
+
+        return redirect(reverse('base:home'))
+    
+
+
+
 
 
 
