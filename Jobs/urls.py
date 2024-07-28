@@ -10,5 +10,6 @@ urlpatterns = [
     path('posted_jobs/', JobPostedLists.as_view(), name='posted_jobs'),
     path('job_applying/<id>/', JobApplyingView.as_view(), name='job_applying'),
     path('success_page/', SuccessPageView.as_view(), name='success'),
+    path('applications/<id>/', ApplicationListView.as_view(), name='application_lists'),
 
 ]

@@ -44,6 +44,22 @@
         {% endif %}
       </ul>
       {% if user.is_authenticated %}
+      <div class="notification-container">
+        
+        <div class="notification-count">
+          <p>{{count}}</p>
+        </div>
+        <div class="notification-area">
+          <img src="../static/images/bell.svg" class="notification-icon" alt="">
+        </div>
+      </div>
+      
+      <div id="notification">
+        {% for notification in notifications %}
+        <p><strong>{{ notification.notification.subject }}</strong></p>
+        <p>{{ notification.notification.content }}</p>
+        {% endfor %}
+      </div>
       <div class="auth">
         <a href="{% url 'accounts:logout' %}"><button class="login-btn">Logout</button></a>
       </div>
@@ -83,6 +99,20 @@
     <li>Contact</li>
   </ul>
 </div> -->
+<script>
+
+  const bellIcon = document.querySelector('.notification-icon');
+  const notification = document.querySelector('#notification');
+
+  bellIcon.addEventListener('click', function() {
+      if (notification.style.display === 'none') {
+          notification.style.display = 'block';
+      } else {
+          notification.style.display = 'none';
+      }
+  });
+
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

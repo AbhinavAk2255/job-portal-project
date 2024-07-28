@@ -1,4 +1,4 @@
-from django.forms import DateInput, ModelForm, NumberInput, Select, TextInput, Textarea, SelectMultiple
+from django.forms import DateInput, ModelForm, NumberInput, Select, TextInput, Textarea, SelectMultiple, FileInput
 from Jobs.models import Jobs,  JobApplication
 from tinymce.widgets import TinyMCE
 
@@ -61,7 +61,7 @@ class ApplicationForm(ModelForm):
 
     class Meta:
         model = JobApplication
-        fields = ['name', 'company', 'designation', 'salary', 'quit_reason']
+        fields = ['name', 'company', 'designation', 'salary', 'quit_reason', 'resume']
         widgets = {
             'name' : TextInput({
                 'class': 'form-control',
@@ -82,5 +82,10 @@ class ApplicationForm(ModelForm):
                 'class': 'form-control',
                 
             }),
+            'resume' : FileInput({
+                'class': 'form-control',
+                
+            }),
+            
             
         }

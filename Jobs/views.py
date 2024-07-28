@@ -1,3 +1,4 @@
+from pyexpat.errors import messages
 from urllib import request
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,6 +10,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate,login,logout
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.shortcuts import HttpResponse
 
 # Create your views here.
 
@@ -90,9 +92,29 @@ class JobsListingView(LoginRequiredMixin, View):
 
 
 class JobPostedLists(LoginRequiredMixin, View):
+    template_name = 'employer/jobs_posted_list.html'
+    paginate_by = 3
+
+
     def get(self, request):
-        return render(request, 'employer/jobs_posted_list.html')
+        # loged_user = self.request.user
+
+        job_post = Jobs.objects.filter(user=self.request.user)
+        all_applications = []
+        
+        if job_post.exists():
+            for job in job_post:
+                applications = JobApplication.objects.filter(job=job)
+                all_applications.extend(applications)
+
+        count = len(all_applications)
+        context = {
+            'jobs': job_post,
+            'count':count
+        }
+        return render(request, self.template_name,context)
     
+
 
 class JobApplyingView(LoginRequiredMixin, View):
     form_class = ApplicationForm
@@ -115,8 +137,9 @@ class JobApplyingView(LoginRequiredMixin, View):
             'job' : job,
             'form': self.form_class()
         }
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         if not form.is_valid():
+            return HttpResponse(form.errors)
             return render(request, self.template_name, context)
         
         form.instance.user = self.request.user
@@ -126,6 +149,69 @@ class JobApplyingView(LoginRequiredMixin, View):
         return redirect(reverse('jobs:success'))
     
     
+
+
+class ApplicationListView(LoginRequiredMixin, View):
+    template_name = 'employer/applications_list.html'
+    paginate_by = 2
+
+    def get(self, request,  *args, **kwargs):
+        job_id = kwargs.get('id')
+        job = get_object_or_404(Jobs, id=job_id)
+
+        if job.user != self.request.user:
+            messages.error(request, 'You Do not have the permission!')
+            return redirect(reverse('jobs:posted_jobs'))
+        
+        status_filter = request.GET.get('status', '')
+        print(status_filter)
+        job_applications = JobApplication.objects.filter(job=job) 
+        
+
+        if status_filter:
+            job_applications = JobApplication.objects.filter(status=status_filter)
+
+
+        paginator = Paginator(job_applications, self.paginate_by)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+
+        context = {
+            'applications': page_obj,
+            'job': job,
+            'selected_status': status_filter,
+            'status_choices' : JobApplication.STATUS_TYPE
+        }
+        return render(request, self.template_name, context)
+    
+    def post(self, request,  *args, **kwargs):
+        job_id = kwargs.get('id')
+        job = get_object_or_404(Jobs, id=job_id)
+
+        if job.user != self.request.user:
+            messages.error(request, 'You Do not have the permission!')
+            return redirect(reverse('jobs:posted_jobs'))
+        
+        action = request.POST.get('action')
+        application_id = request.POST.get('application_id')
+        application = get_object_or_404(JobApplication, id=application_id, job=job)
+
+        if action == 'Select':
+            application.status = 'Selected'
+        elif action == 'Reject':
+            application.status = 'Rejected'
+
+        
+        application.save()
+        page_number = request.GET.get('page', 1)
+        status_filter = request.GET.get('status', '')
+
+        redirect_url = f"{request.path}?page={page_number}&status={status_filter}"
+        return redirect(redirect_url)
+
+
+
 
 # class JobApplyingFormView(LoginRequiredMixin, View):
 #     form_class = ApplicationForm

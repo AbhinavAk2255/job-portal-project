@@ -23,6 +23,14 @@
                         <!-- <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"> -->
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="">{{ form.employe.label }}</label>
+                        {{ form.employe }}
+                       
+                        <!-- <input type="text" class="form-control" id="Username" name="Username" placeholder="Username"> -->
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-primary btn-block">Save</button>
                 {% if form.errors %}
                     {% for error in form.errors %}

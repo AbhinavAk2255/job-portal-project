@@ -295,8 +295,9 @@ class SecondRegistration(ModelForm):
                 'type' : 'date'
                 
             }),
-            'Hobbies' : SelectMultiple({
+            'Hobbies' : Select({
                 'class': 'form-control',
+                'multiple':'true',
                 
             }),
             'qualification' : Select({
@@ -304,8 +305,9 @@ class SecondRegistration(ModelForm):
                 'Placeholder' : 'Highest Qualification'
                 
             }),
-            'Interest' : SelectMultiple({
+            'Interest' : Select({
                 'class': 'form-control',
+                'multiple':'true',
                 
             }),
 
@@ -386,7 +388,7 @@ class JobSeekerRegisterForm(ModelForm):
     
     class Meta:
         model = User
-        fields = ['job_title', 'expertise_level']
+        fields = ['job_title', 'expertise_level','employe']
         widgets = {
             'job_title' : Select({
                 'class': 'form-control',
@@ -396,6 +398,11 @@ class JobSeekerRegisterForm(ModelForm):
             'expertise_level' : Select({
                 'class': 'form-control',
                 'placeholder': 'Expertise Level'
+                
+            }),
+            'employe' : Select({
+                'class': 'form-control',
+                'placeholder': 'Who you Are'
                 
             }),
         }

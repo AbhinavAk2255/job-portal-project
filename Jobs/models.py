@@ -5,6 +5,8 @@ from authentication.models import User,JobTitle
 
 # Create your models here.
 
+
+# job post model
 class Jobs(models.Model):
 
     JOB_TYPES = (
@@ -31,14 +33,17 @@ class Jobs(models.Model):
     salary_type = models.CharField(max_length=255, choices=SALARY_TYPE, default='mnt')
     location = models.CharField(max_length=255, null=True)
 
+    def __str__(self):
+        return self.job_title.title
+
 
 
 class JobApplication(models.Model):
 
     STATUS_TYPE = (
-        ('select', 'Select'),
-        ('reject', 'Reject'),
-        ('pending', 'Pending'),
+        ('Selected', 'Selected'),
+        ('Rejected', 'Rejected'),
+        ('Pending', 'Pending'),
     )
 
     QUIT_REASONS = (
@@ -63,8 +68,33 @@ class JobApplication(models.Model):
     job = models.ForeignKey(Jobs, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=True, blank=True)
-    company = models.CharField(max_length=100, null=True, unique=True)
+    company = models.CharField(max_length=100, null=True)
     designation = models.CharField(max_length=255, null=True)
     salary = models.IntegerField()
     quit_reason = models.CharField(max_length=255, choices=QUIT_REASONS, default='career_advancement')
-    status = models.CharField(max_length=20, choices=STATUS_TYPE, default='pending')
+    resume = models.FileField(upload_to='resumes/', null=True, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_TYPE, default='Pending')
+
+    def __str__(self):
+        return self.name
+    
+
+
+class Notification(models.Model):
+    id = models.AutoField(primary_key=True)
+    subject = models.CharField(max_length=50)
+    content = models.CharField(max_length=225)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.subject
+    
+
+
+class NotificationList(models.Model):
+    notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
+    user = models.ForeignKey(User ,on_delete=models.CASCADE)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.notification.subject

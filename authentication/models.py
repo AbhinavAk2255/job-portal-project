@@ -28,7 +28,7 @@ class JobTitle(models.Model):
 
 
 
-class User(AbstractUser):
+class User(AbstractUser): 
         
 
     GENDER_CHOICES = (

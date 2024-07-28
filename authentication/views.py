@@ -175,9 +175,11 @@ class JobSeekerRegisterView(LoginRequiredMixin, View):
             return render(request, self.template_name, {'form': form})
         
         user = self.request.user
-        
+          
         user.job_title = form.cleaned_data['job_title']
         user.expertise_level = form.cleaned_data['expertise_level']
+        user.employe = form.cleaned_data['employe']
+        user.save()
 
         return redirect(reverse('base:home'))
     
