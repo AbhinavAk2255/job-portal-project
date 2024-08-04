@@ -11,24 +11,28 @@
                 {% csrf_token %}
                 
                 <div class="row">
-                    <div class="form-group col">
+                    <div class="form-group col-md-6">
                         <label for="">{{ form.job_title.label }}</label>
                         {{ form.job_title }}
-                       
-                        <!-- <input type="text" class="form-control" id="Username" name="Username" placeholder="Username"> -->
+                        {% for error in form.job_title.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
                     </div>
                     <div class="form-group col">
                         <label for="">{{ form.expertise_level.label }}</label>
                         {{ form.expertise_level }}
-                        <!-- <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"> -->
+                        {% for error in form.expertise_level.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col">
+                    <div class="form-group col-md-12">
                         <label for="">{{ form.employe.label }}</label>
                         {{ form.employe }}
-                       
-                        <!-- <input type="text" class="form-control" id="Username" name="Username" placeholder="Username"> -->
+                        {% for error in form.employe.errors %}
+                            <div class="error">{{ error }}</div>
+                        {% endfor %}
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Save</button>

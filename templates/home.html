@@ -38,7 +38,15 @@
                     </div>	
                 </form>	
             </div>
-            <p><span><a href="">Post a job today</a></span>and connect with quality candidates</p>
+            <p><span><a href="{% url 'jobs:change_user' %}">Post a job today</a></span>and connect with quality candidates</p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.employe }}
+                    <!-- <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"> -->
+                </div>
+                <button type="submit">Change User Type</button>
+            </form>
         </div>
 
         <div class="joblist-area">
@@ -100,6 +108,29 @@
     
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const jobList = document.querySelector('.job-lists');
+            const jobDescription = document.querySelector('.job-details');
+
+            function fetchRecentJobDescription() {
+                fetch(window.location.href)
+                    .then(response => response.text())
+                    .then(data => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(data, 'text/html');
+                        const recentJobDescription = doc.querySelector('#job-description').innerHTML;
+                        jobDescription.innerHTML = recentJobDescription;
+                    });
+            }
+
+            // Fetch the recent job description on page load
+            fetchRecentJobDescription();
+
+            // Fetch the recent job description periodically
+            setInterval(fetchRecentJobDescription, 60000); // Fetch every 60 seconds
+        });
+        
         document.querySelector('.nice-select').addEventListener('click', function() {
             document.querySelector('.nice-select').classList.toggle('open');
         });

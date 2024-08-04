@@ -11,31 +11,59 @@
                 {% csrf_token %}
                 
                 <div class="form-group">
+                    {{ form.first_name.label }}
                     {{ form.first_name }}
-                   
-                    <!-- <input type="text" class="form-control" id="Username" name="Username" placeholder="Username"> -->
+                    {% for error in form.first_name.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
                 </div>
+
                 <div class="form-group">
+                    {{ form.last_name.label }}
                     {{ form.last_name }}
-                    <!-- <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"> -->
+                    {% for error in form.last_name.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
                 </div>
+
                 <div class="form-group">
+                    {{ form.email.label }}
                     {{ form.email }}
-                    <!-- <input type="password" class="form-control" id="password" name="password" placeholder="Password"> -->
+                    {% for error in form.email.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
                 </div>
+
+
                 <div class="form-group">
+                    {{ form.username.label }}
                     {{ form.username }}
-                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                    {% for error in form.username.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
                 </div>
+
+
                 <div class="form-group">
+                    {{ form.password.label }}
                     {{ form.password }}
-                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                    {% for error in form.password.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
                 </div>
+
+
                 <div class="form-group">
+                    {{ form.confirm_password.label }}
                     {{ form.confirm_password }}
-                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                    {% for error in form.confirm_password.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <small class="text-danger">{{error}}</small>
+                        </div>
+                    {% endfor %}
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Register</button>
+                
                 
                 <a href="{% url 'accounts:login' %}" class="btn btn-transparent btn-block mt-2 w-full">Login</a>
             </form>

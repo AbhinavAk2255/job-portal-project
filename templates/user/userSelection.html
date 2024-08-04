@@ -4,7 +4,22 @@
 
 {% block content %}
 
+<div class="message-area col-md-6 d-flex justify-content-center mt-3">
+    {% if messages %}
+        <div id="message_container">
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+{% endif %}
+</div>
+
 <section class="user-section">
+    
+    
     <div id="user-container">
 
         <p>who you  <span class="accent">are?</span></p>
@@ -27,6 +42,18 @@
             </div>
         </div>
     </div>
+    
+    
 </section>
+
+<script>
+    // Hide messages after 5 seconds (5000 milliseconds)
+    setTimeout(function() {
+        var messageContainer = document.getElementById('message_container');
+        if (messageContainer) {
+            messageContainer.style.display = 'none';
+        }
+    }, 3000);
+</script>
 
 {% endblock content %}

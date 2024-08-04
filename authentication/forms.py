@@ -4,6 +4,52 @@ from django.forms import  CharField, Textarea, FileInput, DateInput,NumberInput,
 from .models import *
 from django.core.validators import MinLengthValidator
 from django import forms
+from django.core.exceptions import ValidationError
+from .validators import validate_video_file
+from django.utils.translation import gettext_lazy as _
+
+
+def validate_age(dob):
+    today = date.today()
+    age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+    if age < 18:
+        raise ValidationError('You must be at least 18 years old.')
+
+
+class MultipleImageInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleImageField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleImageInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = [single_file_clean(data, initial)]
+        return result
+
+    def to_python(self, data):
+        if data in self.empty_values:
+            return None
+
+        if isinstance(data, list):
+            return [self.check_and_store_image(d) for d in data]
+        else:
+            return self.check_and_store_image(data)
+
+    def check_and_store_image(self, data):
+        file = super().to_python(data)
+        if file is None:
+            return None
+        if not file.content_type.startswith('image'):
+            raise ValidationError(_('File type is not supported.'), code='invalid')
+        return file
+
 
 
 class LoginForm(Form):
@@ -39,12 +85,11 @@ class UserRegisterForm(ModelForm):
         ],
         widget= PasswordInput({
             'class':'form-control',
-            'placeholder':'Confirm Password'
         })
     )
 
     
-    class Meta():
+    class Meta:
         model = User
         fields = [
             'first_name',
@@ -52,89 +97,173 @@ class UserRegisterForm(ModelForm):
             'email',
             'username',
             'password',
+            
 
         ]
-        
+
         widgets = {
             'first_name': TextInput({
                 'class':'form-control',
-                'placeholder':'Firstname'
+                
             }),
 
             'last_name': TextInput({
                 'class':'form-control',
-                'placeholder':'Lastname'
+                
             }),
 
             'username': TextInput({
                 'class':'form-control',
-                'placeholder':'Username'
+                
             }),
 
             'email': EmailInput({
                 'class':'form-control',
-                'placeholder':'Email'
+                
             }),
 
             'password': PasswordInput({
                 'class':'form-control',
-                'placeholder':'Password'
+                
             }),
 
         }
 
-
-# class DetailRegistration(ModelForm):
-#     class Meta():
-#         model = User
-#         fields = [
-#             'phone',
-#             'profile_photo',
-#             'dob',
-#             'short_bio',
-#             'job_title',
-#             'gender',
-#             'country',
-#             'open_to_hiring'
-#         ]
         
-#         widgets = {
 
-#             'phone': TextInput({
-#                 'class':'form-control',
-#                 'placeholder':'Phone'
-#             }),
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+        print(password)
+        print(confirm_password)
 
-#             'dob': DateInput({
-#                 'class': 'form-control'
-#             }),
+        if password and confirm_password:
+            if password != confirm_password:
+                self.add_error('confirm_password', "Passwords do not match.")
+                
 
-#             'short_bio': Textarea({
-#                 'class': 'form-control',
-#                 'rows': '3',
-#                 'placeholder': 'Short Bio'
-#             }),
+        return cleaned_data
 
-#             'job_title': TextInput({
-#                 'class': 'form-control',
-#                 'placeholder': 'Job Title'
-#             }),
 
-#             'gender': Select({
-#                 'class': 'form-control'
-#             }),
+#user activities form
 
-#             'country': Select({
-#                 'class': 'form-control'
-#             }),
+class SecondRegistration(ModelForm):
+    class Meta:
+        model = User
+        fields = ['date_of_birth', 'qualification', 'smoking_habit', 'drinking_habit', 'profile_picture', 'short_reel']
 
-#             'open_to_hiring': CheckboxInput(),
+        
+        widgets = {
 
-#             'profile_photo': FileInput({
-#                 'class': 'form-control'
-#             })
-#         }
+            'date_of_birth' : DateInput({
+                'class': 'form-control',
+                'type' : 'date'
+                
+            }),
+            'qualification' : Select({
+                'class': 'form-control',
+                'Placeholder' : 'Highest Qualification'
+                
+            }),
+
+            'smoking_habit' : Select({
+                
+                
+            }),
+            'drinking_habit' : Select({
+                
+                
+            }),
+            'profile_picture' : FileInput({
+                'class': 'form-control',
+                
+            }),
+
+            'short_reel' : FileInput({
+                'class': 'form-control',
+                
+            }),
+
+
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field_instance in self.fields.items():
+            field_instance.required = True
     
+    def clean_dob(self):
+        dob = self.cleaned_data.get('date_of_birth')
+        validate_age(dob)
+        return dob
+    
+    def clean_short_reel(self):
+        short_reel = self.cleaned_data.get('short_reel', False)
+        if not short_reel:
+            raise forms.ValidationError("No file chosen!")
+
+        validate_video_file(short_reel)
+        return short_reel
+
+class UserImageForm(ModelForm):
+    image = MultipleImageField(label='Image Files')
+
+    class Meta:
+        model = UserImages
+        fields = ['image']
+        widgets = {
+            'image': MultipleImageInput(attrs={'class': 'form-control', 'multiple': True,'accept': 'image/*'}),
+        }
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.user = self.user
+        if commit:
+            instance.save()
+        return instance
+    
+class ImageForm(forms.ModelForm):
+    
+    class Meta:
+        model = UserImages
+        fields = ['image']
+        
+        widgets = {
+            'image': forms.FileInput(attrs={'class': 'form-control', 'required':True}),
+        }
+        
+    def clean_image(self):
+        image = self.cleaned_data.get('image', False)
+        if not image:
+            raise forms.ValidationError("File is required.")
+        return image
+
+
+
+
+class UserHobbyForm(ModelForm):
+    hobbies = forms.ModelMultipleChoiceField(
+        queryset=Hobbies.objects.all(),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+        required=True
+    )
+
+    class Meta:
+        model = UserHobbie
+        fields = []
+
+
+class UserInterestForm(forms.ModelForm):
+    interests = forms.ModelMultipleChoiceField(
+        queryset=Interest.objects.all(),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+        required=True
+    )
+
+    class Meta:
+        model = UserIntrests
+        fields = []
+
+
 
 
 
@@ -183,8 +312,7 @@ class AddressCreationForm(ModelForm):
 
     class Meta:
         model = Address
-        fields = '__all__'
-        exclud = ['user']
+        fields = ['name','address_line_1','address_line_2','address_line_3','city','state','pincode','country','phone','is_default']
         widgets = {
             'name': TextInput({
                 'class': 'form-control'
@@ -280,77 +408,24 @@ class ProfileUpdateForm(ModelForm):
         }
 
 
-#user activities form
 
-class SecondRegistration(ModelForm):
-    class Meta:
-        model = User
-        fields = ['date_of_birth', 'Hobbies', 'qualification', 'Interest', 'smoking_habit', 'drinking_habit', 'profile_picture', 'images', 'short_reel']
 
+
+# class QualificationsForm(ModelForm):
+#     class Meta:
+#         model = UserQualifications
+#         exclude = ["user"]
         
-        widgets = {
+#     def clean(self):
+#         cleaned_data = super().clean()
+#         start_date = cleaned_data.get('start_date')
+#         end_date = cleaned_data.get('end_date')
 
-            'date_of_birth' : DateInput({
-                'class': 'form-control',
-                'type' : 'date'
-                
-            }),
-            'Hobbies' : Select({
-                'class': 'form-control',
-                'multiple':'true',
-                
-            }),
-            'qualification' : Select({
-                'class': 'form-control',
-                'Placeholder' : 'Highest Qualification'
-                
-            }),
-            'Interest' : Select({
-                'class': 'form-control',
-                'multiple':'true',
-                
-            }),
+#         if start_date and end_date:
+#             if start_date >= end_date:
+#                 raise forms.ValidationError("Start date must be earlier than end date.")
 
-            'smoking_habit' : CheckboxInput({
-                
-                
-            }),
-            'drinking_habit' : CheckboxInput({
-                
-                
-            }),
-            'profile_picture' : FileInput({
-                'class': 'form-control',
-                
-            }),
-            'images' : FileInput({
-                'class': 'form-control',
-                
-            }),
-            'short_reel' : FileInput({
-                'class': 'form-control',
-                
-            }),
-
-
-        }
-
-
-class QualificationsForm(ModelForm):
-    class Meta:
-        model = UserQualifications
-        exclude = ["user"]
-        
-    def clean(self):
-        cleaned_data = super().clean()
-        start_date = cleaned_data.get('start_date')
-        end_date = cleaned_data.get('end_date')
-
-        if start_date and end_date:
-            if start_date >= end_date:
-                raise forms.ValidationError("Start date must be earlier than end date.")
-
-        return cleaned_data
+#         return cleaned_data
 
 
 # empoloyer registration form
@@ -363,17 +438,17 @@ class EmployerRegisterForm(ModelForm):
         widgets = {
             'company_name' : TextInput({
                 'class': 'form-control',
-                'placeholder': 'Company Name'
+                
                 
             }),
             'designation' : TextInput({
                 'class': 'form-control',
-                'placeholder': 'Designation'
+                
                 
             }),
             'location' : TextInput({
                 'class': 'form-control',
-                'placeholder': 'Location'
+                
                 
             }),
             'employe' : Select({

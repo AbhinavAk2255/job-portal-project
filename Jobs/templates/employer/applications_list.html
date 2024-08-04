@@ -4,6 +4,7 @@
 {% block content %}
 
 <div class="jobs_table">
+  {% if applications %}
     <form method="get" class="filter_area">
         <h2>{{ job.job_title }}</h2>
         <select name="status" id="status-filter">
@@ -15,33 +16,35 @@
         <button type="submit">Apply</button>
 
     </form>
-  <table class="responstable">
-    <tr>
-      <th>Applicant name</th>
-      <th><span>Company Name</span></th>
-      <th>previous CTC</th>
-      <th>resume</th>
-      <th>Action</th>
+      <table class="responstable">
+      <tr>
+        <th>Applicant name</th>
+        <th><span>Company Name</span></th>
+        <th>previous CTC</th>
+        <th>resume</th>
+        <th>Action</th>
 
-    </tr>
-    
-    {% for application in applications %}
-    <tr>
-      <td>{{application.name}}</td>
-      <td>{{application.company}}</td>
-      <td>{{application.salary}}</td>
-      <td><a href="{{ application.resume.url }}" target="_blank">View Resume</a></td>
-      <td>
-        <form method="post"  class="application_actions">
-          {% csrf_token %}
-            <input type="text" name="application_id" value="{{application.id}}" hidden>
-            <button type="submit" name="action" value="Select">Select</button>
-            <button type="submit" name="action" value="Reject">Reject</button>
-        </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
+      </tr>
+      
+      {% for application in applications %}
+      <tr>
+        <td>{{application.name}}</td>
+        <td>{{application.company}}</td>
+        <td>{{application.salary}}</td>
+        <td><a href="{{ application.resume.url }}" target="_blank">View Resume</a></td>
+        <td>
+          <form method="post"  class="application_actions">
+            {% csrf_token %}
+              <input type="text" name="application_id" value="{{application.id}}" hidden>
+              <button type="submit" name="action" value="Select">Select</button>
+              <button type="submit" name="action" value="Reject">Reject</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    <h1>no application</h1>
 </div>
 
 <div class="next-page">

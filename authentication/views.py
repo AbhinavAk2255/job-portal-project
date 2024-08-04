@@ -1,3 +1,4 @@
+from urllib import request
 from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpRequest
@@ -42,7 +43,7 @@ class user_login(View):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('/')
+                return redirect('base:home')
             else:
                 return HttpResponse('Invalid username or password')
         return render(request, self.template_name, {'form': form})
@@ -72,38 +73,94 @@ class RegisterView(View):
         password = form.cleaned_data['password']
         user = authenticate(request, username=username, password=password)
 
-        login(request, user)
-        return redirect(reverse('accounts:user_activity'))
-    
+        if user is not None:
+            login(request, user)
+            messages.success(request, "Registration Step-1 Completed")
+            return redirect(self.success_url)
+        else:
+            messages.error(request, "Authentication failed.")
+            return render(request, self.template_name, {'form': form})
+        
+
     
 # Register page 2
 
-class RegisterCompleteView(LoginRequiredMixin, View):
+class RegisterCompleteView(LoginRequiredMixin, FormView):
     form_class = SecondRegistration
     template_name = 'user/user_activities.html'
-    # success_url = reverse_lazy('accounts:user_seleciton)
+    success_url = reverse_lazy('accounts:user_seleciton')
 
-    def get(self, request):
-        return render(request, self.template_name, {'form': self.form_class()})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['hobby_form'] = UserHobbyForm()
+        context['interest_form'] = UserInterestForm()
+        context['image_form'] = UserImageForm()
+        return context
+
     
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if not form.is_valid():
-            return render(request, self.template_name, {'form': form})
-        
-        user = self.request.user
-        
-        user.date_of_birth = form.cleaned_data['date_of_birth']
-        user.Hobbies = form.cleaned_data['Hobbies']
-        user.qualification = form.cleaned_data['qualification']
-        user.Interest = form.cleaned_data['Interest']
-        user.smoking_habit = form.cleaned_data['smoking_habit']
-        user.drinking_habit = form.cleaned_data['drinking_habit']
-        if 'profile_picture' in form.cleaned_data:
-            user.profile_picture = form.cleaned_data['profile_picture']
-            user.save()
 
-        return redirect(reverse('accounts:user_seleciton'))
+    def form_valid(self, form):
+        # Initialize forms with POST data
+        hobby_form = UserHobbyForm(self.request.POST)
+        interest_form = UserInterestForm(self.request.POST)
+        image_form = UserImageForm(self.request.POST, self.request.FILES)
+
+        if hobby_form.is_valid() and interest_form.is_valid() and image_form.is_valid() and form.is_valid():
+
+            hobbies = hobby_form.cleaned_data['hobbies']
+            for hobby in hobbies:
+                UserHobbie.objects.get_or_create(user=self.request.user, hobbie=hobby)
+
+            interests = interest_form.cleaned_data['interests']
+            for interest in interests:
+                UserIntrests.objects.get_or_create(user=self.request.user, interest=interest)
+
+            images = self.request.FILES.getlist('image')
+            for image in images:
+                UserImages.objects.create(user=self.request.user, image=image)
+            
+            user = self.request.user
+            user.profile_picture = form.cleaned_data['profile_picture']
+            user.date_of_birth = form.cleaned_data['date_of_birth']
+            user.qualification = form.cleaned_data['qualification']
+            user.smoking_habit = form.cleaned_data['smoking_habit']
+            user.drinking_habit = form.cleaned_data['drinking_habit']
+            user.short_reel = form.cleaned_data['short_reel']
+
+            user.save()
+            
+            messages.success(self.request, "Registration Successfull")
+            return super().form_valid(form)
+        
+        return self.form_invalid(form, hobby_form=hobby_form, interest_form=interest_form, image_form=image_form)
+    
+    def form_invalid(self, form, hobby_form=None, interest_form=None, image_form=None):
+        context = self.get_context_data(
+            form=form,
+            hobby_form=hobby_form or UserHobbyForm(),
+            interest_form=interest_form or UserInterestForm(),
+            image_form=image_form or UserImageForm(),
+        )
+        messages.error(self.request, "Registration Unsuccessfull")
+        return self.render_to_response(context)
+
+    
+    # def post(self, request):
+    #     form = self.form_class(request.POST)
+    #     if not form.is_valid():
+    #         return render(request, self.template_name, {'form': form})
+        
+    #     user = self.request.user
+        
+    #     user.date_of_birth = form.cleaned_data['date_of_birth']
+    #     user.qualification = form.cleaned_data['qualification']
+    #     user.smoking_habit = form.cleaned_data['smoking_habit']
+    #     user.drinking_habit = form.cleaned_data['drinking_habit']
+    #     if 'profile_picture' in form.cleaned_data:
+    #         user.profile_picture = form.cleaned_data['profile_picture']
+    #         user.save()
+
+    #     return redirect(reverse('accounts:user_seleciton'))
 
 
 
@@ -183,9 +240,6 @@ class JobSeekerRegisterView(LoginRequiredMixin, View):
 
         return redirect(reverse('base:home'))
     
-
-
-
 
 
 
@@ -339,4 +393,12 @@ class ProfileUpdateView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+    
+class profilemodifiedview(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/profile_container.html'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['image_form'] = ImageForm()
+    #     return context
 

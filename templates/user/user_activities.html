@@ -3,75 +3,131 @@
 {% block title %} Register {% endblock title %}
 
 {% block content %}
-
+    
     <div class="register-area">
+        
         <div class="registration-container">
+            {% if messages %}
+            <div id="message_container">
+                {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
             <h1>Profile</h1>
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                
                 <div class="form-group">
-                    {{ form.age }}
-                   
-                    <!-- <input type="text" class="form-control" id="Username" name="Username" placeholder="Username"> -->
-                </div>
-                <div class="form-group">
-                    {{ form.date_of_birth }}
-                    <!-- <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"> -->
-                </div>
-                
-                <div class="form-group">
-                    <label for="">{{ form.Hobbies.label }}</label>
-                    {{ form.Hobbies }}
-                    <!-- <input type="password" class="form-control" id="password" name="password" placeholder="Password"> -->
-                </div>
-                <div class="form-group">
-                    <label for="">{{ form.Interest.label }}</label>
-                    {{ form.Interest }}
-                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
-                </div>
-                <div class="form-group">
-                    
-                    {{ form.qualification }}
-                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
-                </div>
-                <div class="form-group">
-                    <label for="">{{ form.smoking_habit.label }}</label>
-                    {{ form.smoking_habit }}
-                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
-                </div>
-                <div class="form-group">
-                    <label for="">{{ form.drinking_habit.label }}</label>
-                    {{ form.drinking_habit }}
-                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
-                </div>
-                <div class="form-group">
-                    <!-- <label for="">{{ form.country.label }}</label> -->
+                    <label for="">{{form.profile_picture.label}}</label>
                     {{ form.profile_picture }}
-                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
-                </div>
-                <div class="form-group">
-                    {{ form.images }}
-                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
-                </div>
-                <div class="form-group">
-                    {{ form.short_reel }}
-                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Save</button>
-                {{ form.errors }}
-                
-            </form>
-            {% if messages %}
-                <div class="message_container">
-                    {% for message in messages %}
-                    <li style="font-size: 10px;" class="{{message.tags}}">{{message}}</li>
+                    {% for error in form.profile_picture.errors %}
+                        <div class="error">{{ error }}</div>
                     {% endfor %}
                 </div>
-            {% endif %}
+
+                <div class="row">
+        
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">Latest Qualification</label>
+                            {{ form.qualification }}
+                            {% for error in form.qualification.errors %}
+                                <li class="error">{{ error }}</li>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">{{form.date_of_birth.label}}</label>
+                            {{ form.date_of_birth }}
+                            {% for error in form.date_of_birth.errors %}
+                                <li class="error">{{ error }}</li>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">{{hobby_form.hobbies.label}}</label>
+                            {{ hobby_form.hobbies }}
+                            {% for error in hobby_form.hobbie.errors %}
+                                <li class="error">{{ error }}</li>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">{{interest_form.interests.label}}</label>
+                            {{ interest_form.interests }}
+                            {% for error in interest_form.interests.errors %}
+                                <li class="error">{{ error }}</li>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">{{form.smoking_habit.label}}</label>
+                            {{ form.smoking_habit }}
+                            {% for error in form.smoking_habit.errors %}
+                                <li class="error">{{ error }}</li>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">{{form.drinking_habit.label}}</label>
+                            {{ form.drinking_habit }}
+                            {% for error in form.drinking_habit.errors %}
+                                <li class="error">{{ error }}</li>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">{{image_form.image.label}}</label>
+                            {{ image_form.image }}
+                            {% for error in image_form.image.errors %}
+                                <li class="error">{{ error }}</li>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">{{form.short_reel.label}}</label>
+                            {{ form.short_reel }}
+                            {% for error in form.short_reel.errors %}
+                                <li class="error">{{ error }}</li>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Save</button>
+                
+            </form>
+            
         </div>
     </div>
 
-    
-
+    <script>
+        // Hide messages after 5 seconds (5000 milliseconds)
+        setTimeout(function() {
+            var messageContainer = document.getElementById('message_container');
+            if (messageContainer) {
+                messageContainer.style.display = 'none';
+            }
+        }, 5000);
+    </script>
 {% endblock content %}
+

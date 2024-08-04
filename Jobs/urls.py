@@ -11,5 +11,6 @@ urlpatterns = [
     path('job_applying/<id>/', JobApplyingView.as_view(), name='job_applying'),
     path('success_page/', SuccessPageView.as_view(), name='success'),
     path('applications/<id>/', ApplicationListView.as_view(), name='application_lists'),
+    path('change_user/', ChangeUserTypeView.as_view(), name='change_user'),
 
 ]

@@ -54,7 +54,7 @@ class JobPost(LoginRequiredMixin, CreateView):
 
 class JobsListingView(LoginRequiredMixin, View):
     template_name = 'home.html'
-    paginate_by = 3
+    paginate_by = 4
     
 
     def get(self, request):
@@ -75,6 +75,9 @@ class JobsListingView(LoginRequiredMixin, View):
         job_description = None
         if job_id:
             job_description = Jobs.objects.get(pk=job_id)
+
+        elif job_list.exists():
+            job_description = job_list.first()
             
 
         paginator = Paginator(job_list, self.paginate_by)
@@ -238,3 +241,23 @@ class SuccessPageView(LoginRequiredMixin, View):
 
     
 
+class ChangeUserTypeView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = ChangeUserTypeForm
+    template_name = 'home.html'
+    success_url = reverse_lazy('base:home')
+
+    def form_valid(self, form):
+        previous_employe = self.object.employe
+        response = super().form_valid(form)
+        if previous_employe == 'employer' and form.cleaned_data['employe'] == 'job seeker':
+            # User is changing from employer to job seeker
+            Jobs.objects.filter(employer=self.object).delete()
+            messages.success(self.request, 'Your status has been changed to job seeker and your posted jobs have been deleted.')
+        elif previous_employe == 'job seeker' and form.cleaned_data['employe'] == 'employer':
+            # User is changing from job seeker to employer
+            messages.success(self.request, 'Your status has been changed to employer.')
+        return response
+
+    def get_object(self, queryset=None):
+        return self.request.user

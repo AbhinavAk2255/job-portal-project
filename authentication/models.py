@@ -1,6 +1,10 @@
 from datetime import date
+import os
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.dispatch import receiver
+from django.db.models.signals import pre_delete, pre_save
+
 
 # Create your models here.
 
@@ -64,18 +68,32 @@ class User(AbstractUser):
         ("employer", "EMPLOYER"),
     )
 
+    SMOKING_CHOICES = (
+    ('Non-smoker', 'Non-smoker'),
+    ('Occasional smoker', 'Occasional smoker'),
+    ('Regular smoker', 'Regular smoker'),
+    ('Heavy smoker', 'Heavy smoker'),
+    ('Trying to quit', 'Trying to quit'),
+    )
+
+    DRINKING_CHOICES = (
+    ('Non-drinker', 'Non-drinker'),
+    ('Occasional drinker', 'Occasional drinker'),
+    ('Social drinker', 'Social drinker'),
+    ('Regular drinker', 'Regular drinker'),
+    ('Heavy drinker', 'Heavy drinker'),
+    ('Trying to quit', 'Trying to quit'),
+    )
+
     phone = models.CharField(max_length=15, blank=True, null=True)
     date_of_birth = models.DateField(null=True)
-    Hobbies = models.ForeignKey(Hobbies, related_name='user_activities', on_delete=models.CASCADE, null=True, blank=True)
-    Interest = models.ForeignKey(Interest, related_name='user_activities', on_delete=models.CASCADE, null=True, blank=True)
     short_bio = models.TextField(max_length=500, blank=True, null=True)
     gender = models.CharField(max_length=1, default='M', choices=GENDER_CHOICES)
     country = models.CharField(max_length=50, default='IN', choices=COUNTRY_CHOICES)
     open_to_hiring = models.BooleanField(default=False)
-    smoking_habit = models.BooleanField(default=False)
-    drinking_habit = models.BooleanField(default=False)
+    smoking_habit = models.CharField(max_length=20, choices=SMOKING_CHOICES, default='Non-smoker')
+    drinking_habit = models.CharField(max_length=20, choices=DRINKING_CHOICES, default='Non-drinker')
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True)
-    images = models.ImageField('Image/', blank=True)
     short_reel = models.FileField(upload_to='short_reels/', blank=True)
     qualification = models.CharField(max_length=255, blank=True, null=True, choices=QUALIFICATION_CHOICES)
 
@@ -130,26 +148,30 @@ class Address(models.Model):
 
 
 
-class UserQualifications(models.Model):
-    LEVEL_CHOICES = (
-        ('high_school', 'High School'),
-        ('diploma', 'Diploma'),
-        ('ug', 'Undergraduate'),
-        ('graduate', 'Graduate'),
-        ('pg', 'Postgraduate'),
-        ('phd', 'PhD'),
-        ('other', 'Other'),
-    )
-    
-    user = models.ForeignKey(User, related_name='user_qualifications', on_delete=models.CASCADE)
-    level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    course = models.CharField(max_length=100)
-    institution = models.CharField(max_length=100)
+class Education(models.Model):
 
+    QUALIFICATION_CHOICES = (
+    ("High School", "High School"),
+    ("Associate's Degree", "Associate's Degree"),
+    ("Bachelor's Degree", "Bachelor's Degree"),
+    ("Master's Degree", "Master's Degree"),
+    ("Doctorate", "Doctorate"),
+    ("Professional Degree", "Professional Degree"),
+    ("Certificate", "Certificate"),
+    ("Diploma", "Diploma"),
+    ("Postdoctoral", "Postdoctoral"),
+    ("Vocational", "Vocational"),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    institution = models.CharField(max_length=100)
+    degree = models.CharField(max_length=25, choices=QUALIFICATION_CHOICES)
+    field_of_study = models.CharField(max_length=100, blank=True)
+    start_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
+    
     def __str__(self):
-        return f"{self.level} at {self.institution}"
+        return f"{self.degree} from {self.institution}"
 
     
 
@@ -163,6 +185,9 @@ class UserHobbie(models.Model):
     class Meta:
         unique_together = ('user', 'hobbie')
 
+    def __str__(self):
+        return f"{self.user.username} - {self.hobbie.Hobbie}"
+
 
 class UserIntrests(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -172,8 +197,79 @@ class UserIntrests(models.Model):
     class Meta:
         unique_together = ('user', 'interest')
 
+    def __str__(self):
+        return f"{self.user.username} - {self.interest.name}"
+
+
+
+class UserImages(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='user_images/', blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.email
+    
+    
+# @receiver(pre_delete, sender=UserImages)
+# def user_images_delete(sender, instance, **kwargs):
+#     if instance.image:
+#         if os.path.isfile(instance.image.path):
+#             os.remove(instance.image.path)
+
+# @receiver(pre_save, sender=UserImages)
+# def user_images_update(sender, instance, **kwargs):
+#     if instance.pk:
+#         try:
+#             old_instance = UserImages.objects.get(pk=instance.pk)
+#             if old_instance.image:
+#                 if old_instance.image != instance.image:
+#                     if os.path.isfile(old_instance.image.path):
+#                         os.remove(old_instance.image.path)
+#         except UserImages.DoesNotExist:
+#             pass
+    
 
 
 
 
 
+class Experience(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    company = models.CharField(max_length=100)
+    location = models.CharField(max_length=100, blank=True)
+    description = models.TextField(blank=True)
+    start_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.title} at {self.company}"
+    
+
+class Skill(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+
+class UserSkill(models.Model):
+
+    LEVEL_CHOICES = (
+    ('beginner', 'Beginner'),
+    ('intermediate', 'Intermediate'),
+    ('advanced', 'Advanced'),
+    ('expert', 'Expert'),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    level = models.CharField(max_length=12, choices=LEVEL_CHOICES)
+    
+    class Meta:
+        unique_together = ['user', 'skill']
+    
+    def __str__(self):
+        return f"{self.skill}"

@@ -37,7 +37,9 @@ urlpatterns = [
     # profile update url
 
     path('profile/', ProfileView.as_view(), name='profile_view'),
-    path('profile/update/', ProfileUpdateView.as_view(), name='profile_update')
+    path('profile/update/', ProfileUpdateView.as_view(), name='profile_update'),
+    path('profile_modified', profilemodifiedview.as_view(), name='profile_modified')
+
 
 ]
 

@@ -1,4 +1,5 @@
 from django.forms import DateInput, ModelForm, NumberInput, Select, TextInput, Textarea, SelectMultiple, FileInput
+from authentication.models import User
 from Jobs.models import Jobs,  JobApplication
 from tinymce.widgets import TinyMCE
 
@@ -88,4 +89,16 @@ class ApplicationForm(ModelForm):
             }),
             
             
+        }
+
+
+class ChangeUserTypeForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['employe']
+        widgets = {
+            'employe' : Select({
+                'class': 'form-control',
+                
+            }),
         }

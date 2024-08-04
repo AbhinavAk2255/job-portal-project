@@ -4,26 +4,43 @@
 
 {% block content %}
 
-<div class="container pt-5 p-0 mb-5">
-    <div class="row g-0">
-        <div class="col-sm-4 bg-light rounded border">
-            <ul class="list-group">
+<div class="container pt-5 p-0 mb-5 d-flex flex-row gap-5">
+    <div class="row d-flex flex-column g-4 justify-content-start  p-1 align-items-stretch">
+        
+
+        <div class="card p-0">
+            {% if user.profile_picture %}
+            <img src="{{user.profile_picture.url}}" class="rounded-3 col-md-12 p-0" alt="...">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">Full name</h5>
+              <p class="card-text">Employee</p>
+              <button>view reel</button>
+            </div>
+            <ul class="list-group list-group-flush">
+        
                 <li class="list-group-item">
                     <a href="{% url 'accounts:profile_view' %}" class="text-decoration-none">Profile</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="{% url 'accounts:address_list' %}" class="text-decoration-none">Address</a>
-                </li>
-                <li class="list-group-item">Change Password</li>
-                <li class="list-group-item">Logout</li>
+                  </li>
+              <li class="list-group-item">
+                <a href="{% url 'accounts:address_list' %}" class="text-decoration-none">Address</a>
+              </li>
+              <li class="list-group-item">Change Password</li>
+        
+              <li class="list-group-item">Logout</li>
+              <li class="list-group-item">
+                <a href="{% url 'accounts:profile_modified' %}" class="text-decoration-none">Profile modified</a>
+              </li>
             </ul>
-        </div>
-        <div class="col-sm-8 px-5">
-            {% block accounts_content %}
-                
-            {% endblock accounts_content %}
+        
         </div>
     </div>
+    <div class="col-sm-8  shadow-sm px-4 py-4 rounded  bg-body-tertiary">
+        {% block accounts_content %}
+            
+        {% endblock accounts_content %}
+    </div>
 </div>
-
 {% endblock content %}
+
+
