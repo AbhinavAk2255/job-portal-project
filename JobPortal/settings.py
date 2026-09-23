@@ -29,6 +29,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+AUTH_USER_MODEL = 'authentication.User'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,7 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jobapp',
+    'Adminapp',
+    'authentication',
+    'Jobs',
+    'tinymce',
+
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,7 +65,7 @@ ROOT_URLCONF = 'JobPortal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': ['./templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -64,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Jobs.context_processors.job_post',
             ],
         },
     },
@@ -129,3 +139,61 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SMTP configuration
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'abhinavkukku48@gmail.com'
+EMAIL_HOST_PASSWORD = 'ykyq cdxr vzea fxrj'
+
+DEFAULT_FROM_EMAIL = 'job portal'
+
+
+
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 360,
+    'width': 900,
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 20,
+    'selector': 'textarea',
+    'theme': 'modern',
+    'plugins': '''
+        textcolor save link image media preview codesample contextmenu
+        table code lists fullscreen insertdatetime nonbreaking
+        contextmenu directionality searchreplace wordcount visualblocks
+        visualchars code fullscreen autolink lists charmap print
+        hr anchor pagebreak
+        ''',
+    'toolbar': '''
+        undo redo | styleselect | bold italic | alignleft aligncenter
+        alignright alignjustify | bullist numlist outdent indent | link image media
+        ''',
+    'toolbar_items_size': 'small',
+    'image_advtab': True,
+    'content_css': [
+        '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+        '//www.tinymce.com/css/codepen.min.css'
+    ],
+    'font_formats': 'Andale Mono=andale mono,times;' +
+                    'Arial=arial,helvetica,sans-serif;' +
+                    'Arial Black=arial black,avant garde;' +
+                    'Book Antiqua=book antiqua,palatino;' +
+                    'Comic Sans MS=comic sans ms,sans-serif;' +
+                    'Courier New=courier new,courier;' +
+                    'Georgia=georgia,palatino;' +
+                    'Helvetica=helvetica;' +
+                    'Impact=impact,chicago;' +
+                    'Symbol=symbol;' +
+                    'Tahoma=tahoma,arial,helvetica,sans-serif;' +
+                    'Terminal=terminal,monaco;' +
+                    'Times New Roman=times new roman,times;' +
+                    'Trebuchet MS=trebuchet ms,geneva;' +
+                    'Verdana=verdana,geneva;' +
+                    'Webdings=webdings;' +
+                    'Wingdings=wingdings,zapf dingbats',
+    'contextmenu': 'formats | link image',
+    'menubar': True,
+    'statusbar': True,
+}

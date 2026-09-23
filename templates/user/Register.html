@@ -1,0 +1,82 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block title %} Register {% endblock title %}
+
+{% block content %}
+
+    <div class="register-area">
+        <div class="registration-container">
+            <h1>Register</h1>
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    {{ form.first_name.label }}
+                    {{ form.first_name }}
+                    {% for error in form.first_name.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.last_name.label }}
+                    {{ form.last_name }}
+                    {% for error in form.last_name.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.email.label }}
+                    {{ form.email }}
+                    {% for error in form.email.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form.username.label }}
+                    {{ form.username }}
+                    {% for error in form.username.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form.password.label }}
+                    {{ form.password }}
+                    {% for error in form.password.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form.confirm_password.label }}
+                    {{ form.confirm_password }}
+                    {% for error in form.confirm_password.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <small class="text-danger">{{error}}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
+                
+                
+                <a href="{% url 'accounts:login' %}" class="btn btn-transparent btn-block mt-2 w-full">Login</a>
+            </form>
+            {% if messages %}
+                <div class="message_container">
+                    {% for message in messages %}
+                    <li style="font-size: 10px;" class="{{message.tags}}">{{message}}</li>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    
+
+{% endblock content %}

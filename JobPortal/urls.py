@@ -21,5 +21,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('jobapp.urls')),
+    path('',include('jobapp.urls', namespace='base')),
+    path('',include('authentication.urls', namespace='accounts')),
+    path('',include('Adminapp.urls')),
+    path('',include('Jobs.urls', namespace='jobs')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

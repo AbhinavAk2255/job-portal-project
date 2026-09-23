@@ -1,6 +1,160 @@
-{% extends 'base.html' %}
+{% extends 'layout/base.html' %}
 {% block title %} Home {% endblock title %}
 
 {% block content %}
-<div style="color: green;margin-top: 30px;font-size: 30px; margin-left: 25px;">home</div>
+
+<section class="home-section">
+    <div class="home-container">
+        <div class="row">
+            <div class="col-xl-8">
+                <!-- form -->
+                <form method="get" action="{% url 'base:home' %}" class="search-box">
+                    <div class="input-form">
+                        <input type="text" placeholder="Job home-sectionTittle or keyword" name="search">
+                    </div>
+                    <div class="select-form">
+                        <div class="select-itms">
+                            <select name="select" id="select1">
+                                <option value="">Location BD</option>
+                                <option value="">Location PK</option>
+                                <option value="">Location US</option>
+                                <option value="">Location UK</option>
+                            </select>
+                            <div class="nice-select">
+                                <span class="current">
+                                    Location BD
+                                </span>
+                                <ul class="list">
+                                    <li data-value class="option">Location BD</li>
+                                    <li data-value class="option">Location PK</li>
+                                    <li data-value class="option">Location US</li>
+                                    <li data-value class="option">Location UK</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-form">
+                        <button>Find job</button>
+                    </div>	
+                </form>	
+            </div>
+            <p><span><a href="{% url 'jobs:change_user' %}">Post a job today</a></span>and connect with quality candidates</p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.employe }}
+                    <!-- <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"> -->
+                </div>
+                <button type="submit">Change User Type</button>
+            </form>
+        </div>
+
+        <div class="joblist-area">
+            <div class="job-lists">
+                {% for job in jobs %}
+                <div class="job-card">
+                    <div class="job-header">
+                        <div class="job-company">
+                            <img src="https://via.placeholder.com/60" alt="Company Logo">
+                            <div>
+                                <div class="job-title">{{ job.job_title }}</div>
+                                <div class="job-meta">
+                                    <span><i class="fas fa-map-marker-alt"></i>{{ job.location }}</span>
+                                    <span><i class="fas fa-calendar-alt"></i> {{ job.date_posted }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="far fa-bookmark"></i>
+                    </div>
+                    <div class="job-tags">
+                        
+                        <div class="job-tag remote">{{ job.job_mode }}</div>
+                        
+                        
+                    </div>
+                    
+                    <div class="job-footer">
+                        <div><i class="fas fa-dollar-sign"></i> ${{ job.salary_min }} - ${{ job.salary_max }} /{{ job.salary_type }}</div>
+                        <div><i class="fas fa-users"></i> {{ job.vacancies }} Vacancy</div>
+                        <div><a href="?jobs={{job.id}}" class="btn btn-primary">View More</a></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="job-details">
+                {% if job_description.Description %}
+                <div class="card">
+                    <div class="card-header" style="display: flex;justify-content: space-between;">
+                        
+                        {{job_description.job_title}}
+                        <a href="{% url 'jobs:job_applying' job_description.id %}" class="btn btn-primary">Apply</a>
+                    </div>
+                    <div class="card-body job-card-body">
+                            <p class="card-text">{{job_description.Description|safe}}</p>
+                            
+                    </div>
+                  </div>
+                  {% else %}
+
+                  {% endif %}
+            </div>
+            
+        </div>
+
+        
+    
+    </div>
+    
+    
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const jobList = document.querySelector('.job-lists');
+            const jobDescription = document.querySelector('.job-details');
+
+            function fetchRecentJobDescription() {
+                fetch(window.location.href)
+                    .then(response => response.text())
+                    .then(data => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(data, 'text/html');
+                        const recentJobDescription = doc.querySelector('#job-description').innerHTML;
+                        jobDescription.innerHTML = recentJobDescription;
+                    });
+            }
+
+            // Fetch the recent job description on page load
+            fetchRecentJobDescription();
+
+            // Fetch the recent job description periodically
+            setInterval(fetchRecentJobDescription, 60000); // Fetch every 60 seconds
+        });
+        
+        document.querySelector('.nice-select').addEventListener('click', function() {
+            document.querySelector('.nice-select').classList.toggle('open');
+        });
+        
+        document.querySelectorAll('.option').forEach((item)=> {
+            item.addEventListener('click', () => {
+                document.querySelector('.current').innerHTML = item.innerHTML;
+                // console.log(item.innerHTML);
+            })
+        })
+    </script>
+</section>
+
+<div class="next-page">
+    <!-- {% if jobs.has_previous %}
+    <a href="?page={{products.previous_page_number}}"><span><<</span></a>
+    {% endif %} -->
+    {% for i in jobs.paginator.page_range %}
+    <a href="?page={{i}}"><span>{{i}}</span></a>
+    {% endfor %}
+
+    <!-- {% if jobs.has_next %}
+    <a href="?page={{products.next_page_number}}"><span>>></span></a>
+    {% endif %} -->
+</div> 
 {% endblock content %}
+

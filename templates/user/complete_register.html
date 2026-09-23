@@ -1,0 +1,65 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block title %} Register {% endblock title %}
+
+{% block content %}
+
+    <div class="register-area">
+        <div class="registration-container">
+            <h1>Register Profil</h1>
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    {{ form.profile_photo }}
+                   
+                    <!-- <input type="text" class="form-control" id="Username" name="Username" placeholder="Username"> -->
+                </div>
+                <div class="form-group">
+                    {{ form.phone }}
+                    <!-- <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"> -->
+                </div>
+                <div class="form-group">
+                    <label for="">{{ form.dob.label }}</label>
+                    {{ form.dob }}
+                    <!-- <input type="password" class="form-control" id="password" name="password" placeholder="Password"> -->
+                </div>
+                <div class="form-group">
+                    
+                    {{ form.short_bio }}
+                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                </div>
+                <div class="form-group">
+                    {{ form.job_title }}
+                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                </div>
+                <div class="form-group">
+                    <label for="">{{ form.gender.label }}</label>
+                    {{ form.gender }}
+                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                </div>
+                <div class="form-group">
+                    <label for="">{{ form.country.label }}</label>
+                    {{ form.country }}
+                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                </div>
+                <div class="form-group">
+                    {{ form.open_to_hiring }}
+                    <!-- <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Re-enter Password"> -->
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Save</button>
+                
+            </form>
+            {% if messages %}
+                <div class="message_container">
+                    {% for message in messages %}
+                    <li style="font-size: 10px;" class="{{message.tags}}">{{message}}</li>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    
+
+{% endblock content %}

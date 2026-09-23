@@ -1,0 +1,146 @@
+{% extends 'admin_panel/admin-dashboard.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title ">Employers Lists</h4>
+              <p class="card-category"> Here is a subtitle for this table</p>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead class=" text-primary">
+                    <th>Employer Id</th>
+                    <th>Company Name</th>
+                    <th>Contact Person</th>
+                    <th>Phone Number</th>
+                    <th>Registration Date</th>
+                    <th>Status</th>
+                    <th>Verification Status</th>
+                    <th>Openings</th>
+                    <th>Actions</th>
+                  </thead>
+
+                  <tbody>
+                    
+                    <tr>
+                      <td>1</td>
+                      <td>Test Company</td>
+                      <td>Hr Name</td>
+                      <td>Carier@gmail.com</td>
+                      <td>78333673737</td>
+                      <td>01/01/2023</td>
+                      <td>Active</td>
+                      <td>Varified</td>
+                      <td>5</td>
+                      <td>
+                        <a href="{% url 'employer_details' %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="#" class="btn btn-info btn-sm">Edit</a>
+                        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                      </td>
+                    </tr>
+
+
+                    <tr>
+                      <td>2</td>
+                      <td>Test Company</td>
+                      <td>Hr Name</td>
+                      <td>Carier@gmail.com</td>
+                      <td>78333673737</td>
+                      <td>01/01/2024</td>
+                      <td>Deactive</td>
+                      <td>Varified</td>
+                      <td>5</td>
+                      <td>
+                        <a href="{% url 'employer_details' %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="#" class="btn btn-info btn-sm">Edit</a>
+                        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>3</td>
+                      <td>Test Company</td>
+                      <td>Hr Name</td>
+                      <td>Carier@gmail.com</td>
+                      <td>78333673737</td>
+                      <td>01/01/2024</td>
+                      <td>Deactive</td>
+                      <td>Varified</td>
+                      <td>5</td>
+                      <td>
+                        <a href="{% url 'employer_details' %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="#" class="btn btn-info btn-sm">Edit</a>
+                        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>Test Company</td>
+                      <td>Hr Name</td>
+                      <td>Carier@gmail.com</td>
+                      <td>78333673737</td>
+                      <td>01/01/2024</td>
+                      <td>Deactive</td>
+                      <td>Varified</td>
+                      <td>5</td>
+                      <td>
+                        <a href="{% url 'employer_details' %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="#" class="btn btn-info btn-sm">Edit</a>
+                        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>Test Company</td>
+                      <td>Hr Name</td>
+                      <td>Carier@gmail.com</td>
+                      <td>78333673737</td>
+                      <td>01/01/2024</td>
+                      <td>Deactive</td>
+                      <td>Varified</td>
+                      <td>5</td>
+                      <td>
+                        <a href="{% url 'employer_details' %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="#" class="btn btn-info btn-sm">Edit</a>
+                        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends 'layout/base.html' %}
+{% block title %} List {% endblock title %}
+
+{% block content %}
+
+<div class="jobs_table">
+  {% if jobs %}
+  <table class="responstable">
+    <tr>
+      <th>Job Title</th>
+      <th><span>Post Date</span></th>
+      <th>Expire Date</th>
+      <th>Applications</th>
+      <th>Actions</th>
+    </tr>
+    {% for job in jobs %}
+    <tr>
+      <td>{{job.job_title}}</td>
+      <td>{{job.date_posted}}</td>
+      <td>{{job.application_deadline}}</td>
+      <td>{{count}}</td>
+      <td>
+        <button>edit</button>
+        <button><a href="{% url 'jobs:application_lists' id=job.id %}">view</a></button>
+        <button>delete</button>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+</div>
+
+ 
+
+{% endblock content %}

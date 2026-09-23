@@ -1,0 +1,25 @@
+{% extends 'accounts/shared/account_base.html' %}
+{% load static %}
+{% block title %} Interest Add {% endblock title %}
+
+{% block accounts_content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title text-center mb-4">Add Interest</h1>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                            
+                        <div class="d-grid mt-3 mb-5">
+                            <button type="submit" class="btn btn-custom btn-block">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock accounts_content %}
