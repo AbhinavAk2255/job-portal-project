@@ -1,4 +1,5 @@
 from urllib import request
+from django.db import IntegrityError
 from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpRequest
@@ -296,7 +297,9 @@ def get_user(uidb64):
         return User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         return None
-    
+
+
+
 def reset_password(request, uidb64, token):
     user = get_user(uidb64)
 
@@ -378,6 +381,24 @@ class AddressDeleteView(LoginRequiredMixin, View):
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/profile_view.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['image_form'] = ImageForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            user_image = form.save(commit=False)
+            user_image.user = request.user
+            user_image.save()
+            messages.success(request, 'Image updated successfully.')
+            return redirect(reverse_lazy('accounts:profile_view'))
+        else:
+            context = self.get_context_data()
+            context['image_form'] = form
+            context['form_errors'] = True
+            return self.render_to_response(context)
 
 
 class ProfileUpdateView(LoginRequiredMixin, FormView):
@@ -394,11 +415,218 @@ class ProfileUpdateView(LoginRequiredMixin, FormView):
         form.save()
         return super().form_valid(form)
     
-class profilemodifiedview(LoginRequiredMixin, TemplateView):
-    template_name = 'accounts/profile_container.html'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['image_form'] = ImageForm()
-    #     return context
 
+class DeleteImageView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        image = get_object_or_404(UserImages, pk=pk)
+        
+        if image.user == request.user:
+            image.delete()
+            messages.success(request, 'Image deleted successfully.')
+        else:
+            messages.error(request, 'You are not authorized to delete this image.')
+        
+        return redirect(reverse_lazy('accounts:profile_view'))
+
+
+
+
+class AddHobbyView(LoginRequiredMixin, CreateView):
+    model = UserHobbie
+    form_class = UserHobbyAddForm
+    template_name = 'accounts/hobbies-add.html'
+    success_url = reverse_lazy('accounts:profile_view')
+    
+    def form_valid(self, form):
+        try:
+            form.instance.user = self.request.user
+            return super().form_valid(form)
+        except IntegrityError:
+            messages.error(self.request, 'Hobby already exists in your profile.')
+            return self.form_invalid(form)
+        
+
+class AddInterestView(LoginRequiredMixin, CreateView):
+    model = UserIntrests
+    form_class = UserInterestAddForm
+    template_name = 'accounts/interest-add.html'
+    success_url = reverse_lazy('accounts:profile_view')
+    
+    def form_valid(self, form):
+        try:
+            form.instance.user = self.request.user
+            return super().form_valid(form)
+        except IntegrityError:
+            messages.error(self.request, 'Interest already exists in your profile.')
+            return self.form_invalid(form)
+        
+
+
+class DeleteHobbyView(LoginRequiredMixin, View):
+    model = UserHobbie
+    success_url = reverse_lazy('accounts:profile_view')
+    
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+    
+    def get(self, request, *args, **kwargs):
+        hobby_id = kwargs.get('id')
+        hobby = get_object_or_404(UserHobbie, id=hobby_id, user=self.request.user)
+        hobby.delete()
+        messages.success(request, 'Hobby deleted successfully.')
+        return redirect('accounts:profile_view')
+    
+
+class DeleteInterestView(LoginRequiredMixin, View):
+    model = UserIntrests
+    success_url = reverse_lazy('accounts:profile_view')
+    
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+    
+    def get(self, request, *args, **kwargs):
+        interest_id = kwargs.get('id')
+        interest = get_object_or_404(UserIntrests, id=interest_id, user=self.request.user)
+        interest.delete()
+        messages.success(request, 'Interest deleted successfully.')
+        return redirect('accounts:profile_view')
+    
+
+
+class UserSkillCreateView(LoginRequiredMixin, CreateView):
+    form_class = UserSkillUpsertForm
+    template_name = 'accounts/skill_upsert.html'
+    success_url = reverse_lazy('accounts:skill_list')
+    
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        try:
+            response = super().form_valid(form)
+            messages.success(self.request, f'"{form.instance.skill}" created successfully.')
+            return response
+        except IntegrityError:
+            messages.error(self.request, f'"{form.instance.skill}" already exists.')
+            return self.form_invalid(form)
+        
+
+
+class UserSkillListVew(LoginRequiredMixin, ListView):
+    model = UserSkill
+    template_name = 'accounts/skills_lists.html'
+    context_object_name = 'data'
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(user=self.request.user)
+        return queryset
+    
+
+class UserSkillDeleteView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+        education = get_object_or_404(UserSkill, id=id, user=request.user)
+        education.delete()
+        messages.success(self.request, f'{education.skill} deleted successfully.')
+        return redirect('accounts:skill_list')
+    
+
+
+class ExperienceCreateView(LoginRequiredMixin, CreateView):
+    form_class = ExperienceUpsertForm
+    template_name = 'accounts/experience_upsert.html'
+    success_url = reverse_lazy('accounts:experience_list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+        messages.success(self.request, f'"{form.instance.title}" Added successfully.')
+        return response
+    
+
+class ExperienceListVew(LoginRequiredMixin, ListView):
+    model = Experience
+    template_name = 'accounts/experience_list.html'
+    context_object_name = 'data'
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(user=self.request.user)
+        queryset = sorted(queryset, key=lambda experience: experience.start_date, reverse=True)
+        return queryset
+    
+
+class ExperienceUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = ExperienceUpsertForm
+    model = Experience
+    template_name = 'accounts/experience_upsert.html'
+    success_url = reverse_lazy('accounts:experience_list')
+    pk_url_kwarg = 'id'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+        messages.success(self.request, f'"{form.instance.title}" Added successfully.')
+        return response
+    
+
+class ExperienceDeleteView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+        experience = get_object_or_404(Experience, id=id, user=request.user)
+        experience.delete()
+        messages.success(self.request, f'"{experience.title}" deleted successfully.')
+        return redirect('accounts:experience_list')
+
+
+
+class EducationCreateView(LoginRequiredMixin, CreateView):
+    form_class = EducationUpsertForm
+    template_name = 'accounts/education_upsert.html'
+    success_url = reverse_lazy('accounts:education_list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+        messages.success(self.request, f'Education Added successfully.')
+        return response
+    
+
+
+class EducationListVew(LoginRequiredMixin, ListView):
+    model = Education
+    template_name = 'accounts/education_list.html'
+    context_object_name = 'data'
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(user=self.request.user)
+        queryset = sorted(queryset, key=lambda education: education.start_date, reverse=True)
+        return queryset
+    
+
+class EducationUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = EducationUpsertForm
+    model = Education
+    template_name = 'accounts/education_upsert.html'
+    success_url = reverse_lazy('accounts:education_list')
+    pk_url_kwarg = 'id'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+        messages.success(self.request, f'Education Added successfully.')
+        return response
+    
+
+class EducationDeleteView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+        education = get_object_or_404(Education, id=id, user=request.user)
+        education.delete()
+        messages.success(self.request, f'Education deleted successfully.')
+        return redirect('accounts:education_list')

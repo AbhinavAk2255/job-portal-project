@@ -1,4 +1,4 @@
-
+{% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container-fluid navarea">
     <!-- Logo -->
@@ -20,7 +20,7 @@
       <ul class="navbar-nav mx-auto">
         <!-- Navigation links -->
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'base:home' %}">Home</a>
+          <a class="nav-link" href="{% url 'base:index' %}">Home</a>
           
         </li>
         <li class="nav-item">
@@ -44,22 +44,25 @@
         {% endif %}
       </ul>
       {% if user.is_authenticated %}
-      <div class="notification-container">
-        
-        <div class="notification-count">
-          <p>{{count}}</p>
-        </div>
-        <div class="notification-area">
-          <img src="../static/images/bell.svg" class="notification-icon" alt="">
-        </div>
-      </div>
       
-      <div id="notification">
+      
+
         {% for notification in notifications %}
-        <p><strong>{{ notification.notification.subject }}</strong></p>
-        <p>{{ notification.notification.content }}</p>
+        <div id="notification" class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header d-flex justify-content-between">
+            
+            <small>{{ notification.notification.created_at|date:"H:i:s" }}</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            {{ notification.notification.content }}
+          </div>
+        </div>
         {% endfor %}
-      </div>
+
+      
+
+
       <div class="auth">
         <a href="{% url 'accounts:logout' %}"><button class="login-btn">Logout</button></a>
       </div>
@@ -75,18 +78,36 @@
         <a href="#" class="nav-link"><img src="../static/images/bell.svg" class="personal-icons" alt=""></a> -->
         
         {% if user.is_authenticated %}
+        <!-- <div class="dropdown">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown link
+          </a>
+        
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div> -->
         <div class="dropdown">
-          <button class="dropbtn"><a href="#" class="nav-link"><img src="../static/images/user.svg" class="personal-icons" alt=""></a></button>
+          <button class="dropbtn"><i class="fas fa-home"></i></button>
           <div class="dropdown-content">
               <a  href="#">{{user.first_name}}</a>
-
               <a href="#">messages</a>
               <a href="{% url 'accounts:profile_view' %}">Profile</a>
               <a href="#">Logout</a>
           </div>
         </div>
         {% endif %}
-
+      </div>
+      <div class="notification-container">
+        
+        <div class="notification-count">
+          <span>{{count}}</span>
+        </div>
+        <div class="notification-area">
+          <img src="{% static 'images/bell.svg' %}" class="notification-icon" alt="">
+        </div>
       </div>
     </div>
   </div>

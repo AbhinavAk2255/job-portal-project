@@ -365,13 +365,16 @@ class ProfileUpdateForm(ModelForm):
             'username',
             'email',
             'phone',
-            'short_bio',
-            'gender',
-            'country',
-            'open_to_hiring'
+            'profile_picture',
+            'date_of_birth',
+            'qualification',
+            'smoking_habit',
+            'drinking_habit',
+            'short_reel',
         ]
 
         widgets = {
+            
             'username': TextInput({
                 'class': 'form-control'
             }),
@@ -391,21 +394,42 @@ class ProfileUpdateForm(ModelForm):
             'phone': TextInput({
                 'class': 'form-control'
             }),
-            'short_bio': Textarea({
+
+            'date_of_birth': DateInput({
                 'class': 'form-control',
-                'rows': '3'
+                'type': 'date',
+                'required': True
             }),
 
-            'gender': Select({
+            'qualification': Select({
                 'class': 'form-control'
             }),
 
-            'country': Select({
+            'smoking_habit': Select({
                 'class': 'form-control'
             }),
 
-            'open_to_hiring': CheckboxInput(),
+            'drinking_habit': Select({
+                'class': 'form-control'
+            }),
+
+            'profile_picture': FileInput({
+                'class': 'form-control'
+            }),
+
+            'short_reel': FileInput({
+                'class': 'form-control',
+                'accept': 'video/mp4, video/avi, video/mkv, video/mov, video/wmv'
+            })
         }
+    
+    def clean_short_reel(self):
+        short_reel = self.cleaned_data.get('short_reel', False)
+        if not short_reel:
+            raise forms.ValidationError("No file chosen!")
+        
+        validate_video_file(short_reel)
+        return short_reel
 
 
 
@@ -483,5 +507,124 @@ class JobSeekerRegisterForm(ModelForm):
         }
 
 
-# job post form
+class UserHobbyAddForm(ModelForm):
+    class Meta:
+        model = UserHobbie
+        fields = ['hobbie']
+        
+        widgets = {
+            'hobbie': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter hobby', 'required':True}),
+        }
 
+
+class UserInterestAddForm(ModelForm):
+    class Meta:
+        model = UserIntrests
+        fields = ['interest']
+        
+        widgets = {
+            'interest': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Enter interest', 'required':True}),
+        }
+
+
+class ImageForm(ModelForm):
+    
+    class Meta:
+        model = UserImages
+        fields = ['image']
+        
+        widgets = {
+            'image': forms.FileInput(attrs={'class': 'form-control', 'required':True}),
+        }
+        
+    def clean_image(self):
+        image = self.cleaned_data.get('image', False)
+        if not image:
+            raise forms.ValidationError("File is required.")
+        return image
+    
+
+
+class UserSkillUpsertForm(ModelForm):
+    class Meta:
+        model = UserSkill
+        exclude = ['user']
+        widgets = {
+            'skill': Select({
+                'class' : 'form-control',
+                'autocomplete': 'skill',
+            }),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+
+
+class ExperienceUpsertForm(ModelForm):
+    class Meta:
+        model = Experience
+        exclude = ['user']
+        widgets = {
+            'title': TextInput({
+                'class': 'form-control',
+                'autocomplete': 'title'
+            }),
+
+            'company': TextInput({
+                'class': 'form-control',
+                'autocomplete': 'company'
+            }),
+
+            'location': TextInput({
+                'class': 'form-control'
+            }),
+
+            'description': Textarea({
+                'class': 'form-control',
+                'rows':'4'
+            }),
+
+            'start_date': DateInput({
+                'class': 'form-control',
+                'type': 'date'
+            }),
+
+            'end_date': DateInput({
+                'class': 'form-control',
+                'required':False,
+                'type': 'date'
+            }),
+        }
+
+
+
+class EducationUpsertForm(ModelForm):
+    class Meta:
+        model = Education
+        exclude = ['user']
+        widgets = {
+            'institution': TextInput({
+                'class' : 'form-control',
+            }),
+
+            'degree': Select({
+                'class': 'form-control',
+            }),
+
+            'field_of_study': TextInput({
+                'class': 'form-control',
+            }),
+
+            'start_date': DateInput({
+                'class': 'form-control',
+                'type': 'date',
+            }),
+
+            'end_date': DateInput({
+                'class': 'form-control',
+                'required':False,
+                'type': 'date'
+            }),
+        }    

@@ -7,7 +7,7 @@ from Jobs.views import *
 app_name = 'base'
 
 urlpatterns = [
-    path('',views.index),
+    path('',views.index, name='index'),
     path('home/',JobsListingView.as_view(),name='home'),
     path('about/',views.about,name='about'),
 ]

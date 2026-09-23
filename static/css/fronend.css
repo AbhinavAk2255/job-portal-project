@@ -9,7 +9,7 @@
 
 
 body{
-  font-family: "Nunito", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 300;
 	font-size:16px;
 	line-height:18px;
@@ -79,7 +79,7 @@ a, a:hover, a:focus{
   font-weight: 500;
   letter-spacing: 1px;
   line-height: 0;
-  padding: 27px 44px;
+  padding: 18px 30px;
   border-radius: 0px;
   position: relative;
   z-index: 1;
@@ -102,6 +102,7 @@ a, a:hover, a:focus{
   width: 101%;
   height: 101%;
   background: #da2461;
+  color: #010b1d;
   z-index: -1;
   transition: transform 0.5s;
   transform-origin: 0 0;
@@ -121,7 +122,7 @@ a, a:hover, a:focus{
   font-weight: 500;
   letter-spacing: 1px;
   line-height: 0;
-  padding: 27px 44px;
+  padding: 18px 30px;
   border-radius: 0px;
   cursor: pointer;
   /* transition: color 0.4s linear 0s; */
@@ -180,25 +181,27 @@ a, a:hover, a:focus{
 }
 
 .notification-icon{
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  margin-right: 10px;
+  margin-left: 20px;
 }
 .notification-count{
   background-color: red;
   color: white;
   font-weight: bold;
   padding: 5px;
-  border-radius: 49%;
-  width: 25px;
-  height: 25px;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
   position: absolute;
-  top: 32px;
-  right: 269px;
+  top: 40px;
+  right: 74px;
 }
-.notification-count p{
+.notification-count span{
   color: white;
+  display: flex;
+  justify-content: center;
 }
 
 
@@ -248,6 +251,8 @@ a, a:hover, a:focus{
 .dropdown {
   position: relative;
   display: inline-block;
+  margin-left: 10px;
+  
 }
 
 .dropbtn {

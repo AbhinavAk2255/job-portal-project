@@ -104,8 +104,6 @@ class User(AbstractUser):
     job_title = models.ForeignKey(JobTitle, on_delete=models.CASCADE, null=True, blank=True)
     expertise_level = models.CharField(max_length=255, null=True, blank=True, choices=EXPERIANCE_LEVEL)
 
-    # def __str__(self):
-    #     return self username
 
     def age(self):
         if self.date_of_birth:
@@ -211,23 +209,23 @@ class UserImages(models.Model):
         return self.user.email
     
     
-# @receiver(pre_delete, sender=UserImages)
-# def user_images_delete(sender, instance, **kwargs):
-#     if instance.image:
-#         if os.path.isfile(instance.image.path):
-#             os.remove(instance.image.path)
+@receiver(pre_delete, sender=UserImages)
+def user_images_delete(sender, instance, **kwargs):
+    if instance.image:
+        if os.path.isfile(instance.image.path):
+            os.remove(instance.image.path)
 
-# @receiver(pre_save, sender=UserImages)
-# def user_images_update(sender, instance, **kwargs):
-#     if instance.pk:
-#         try:
-#             old_instance = UserImages.objects.get(pk=instance.pk)
-#             if old_instance.image:
-#                 if old_instance.image != instance.image:
-#                     if os.path.isfile(old_instance.image.path):
-#                         os.remove(old_instance.image.path)
-#         except UserImages.DoesNotExist:
-#             pass
+@receiver(pre_save, sender=UserImages)
+def user_images_update(sender, instance, **kwargs):
+    if instance.pk:
+        try:
+            old_instance = UserImages.objects.get(pk=instance.pk)
+            if old_instance.image:
+                if old_instance.image != instance.image:
+                    if os.path.isfile(old_instance.image.path):
+                        os.remove(old_instance.image.path)
+        except UserImages.DoesNotExist:
+            pass
     
 
 
